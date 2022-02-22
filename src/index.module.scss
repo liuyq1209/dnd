@@ -1,0 +1,7 @@
+.page-container {
+  height: 100%;
+  .content-container {
+    height: calc(100% - 60px);
+    background-color: #f8f9fa;
+  }
+}

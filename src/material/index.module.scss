@@ -1,0 +1,17 @@
+.material-container {
+  width: 300px;
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
+  .menu-container {
+    // width: 100%;
+  }
+  .list-container {
+    position: relative;
+    height: calc(100% - 46px);
+    background-color: #fff;
+    .blocks-list-container,
+    .scene-list-container {
+      position: absolute;
+      width: 100%;
+    }
+  }
+}
