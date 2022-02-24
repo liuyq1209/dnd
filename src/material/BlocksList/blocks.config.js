@@ -49,13 +49,13 @@ const componentsList = [
   {
     type: "pc-click",
     id: "btnPrimary",
-    label: "经典按钮",
+    name: "经典按钮",
     content: ButtonPrimary,
   },
   {
     type: "pc-click",
     id: "btnHand",
-    label: "手型按钮",
+    name: "手型按钮",
     content: ButtonHand,
   },
 ]

@@ -4,10 +4,22 @@ import {menu, componentsList} from "./blocks.config"
 import {Flex} from "rebass"
 import Styles from "./BlocksList.module.scss"
 import DragBlocks from "../../components/DragBlocks/DragBlocks"
+import {connect} from "react-redux"
+import store from "../../store"
+import {addBlocks} from "../../store/actions/actions"
 
-function BlocksList() {
+function BlocksList(props) {
   const [curType, setCurType] = useState("pc-click")
-
+  const didDrop = v => {
+    console.log(store)
+    store.dispatch(
+      addBlocks({
+        ...v,
+        sceneId: 1,
+        blockId: 1,
+      })
+    )
+  }
   return (
     <Flex justifyContent={"space-between"}>
       <div>
@@ -16,7 +28,8 @@ function BlocksList() {
           defaultSelectedKeys={[curType]}
           defaultOpenKeys={["pc"]}
           onClick={v => {
-            setCurType(v.id)
+            console.log(v)
+            setCurType(v.key)
           }}
         >
           {menu.map(v => {
@@ -40,7 +53,7 @@ function BlocksList() {
                 {v.name}
               </div>
             )
-            return <DragBlocks com={com} val={v} />
+            return <DragBlocks com={com} val={v} didDrop={didDrop} />
           })}
       </Space>
     </Flex>
