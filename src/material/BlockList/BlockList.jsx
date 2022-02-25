@@ -1,27 +1,22 @@
 import React, {useState} from "react"
 import {Menu, Space} from "antd"
-import {menu, componentsList} from "./blocks.config"
+import {menu, componentsList} from "./block.config"
 import {Flex} from "rebass"
 import Styles from "./BlocksList.module.scss"
 import DragBlocks from "../../components/DragBlocks/DragBlocks"
 import {connect} from "react-redux"
 import store from "../../store"
-import {addBlocks, changeCurBlock} from "../../store/actions/actions"
+import orm from "../../store/model/orm"
+import {addBlock, changeCurBlock} from "../../store/actions/actions"
 
-function BlocksList({state, changeCurBlock}) {
+function BlocksList({globalReducer, ormReducer, addBlock, changeCurBlock}) {
   const [curType, setCurType] = useState("pc-click")
   const didDrop = v => {
-    console.log(changeCurBlock)
-    changeCurBlock({curBlock: v})
-    // console.log(store, store.getState())
-    // store.dispatch(
-    //   addBlocks({
-    //     ...v,
-    //     sceneId: 1,
-    //     blockId: 1,
-    //   })
-    // )
-    // store.dispatch(changeCurBlock({}))
+    addBlock({
+      ...v,
+      curScene: globalReducer.curScene,
+    })
+    changeCurBlock(v)
   }
   return (
     <Flex justifyContent={"space-between"}>
@@ -31,7 +26,6 @@ function BlocksList({state, changeCurBlock}) {
           defaultSelectedKeys={[curType]}
           defaultOpenKeys={["pc"]}
           onClick={v => {
-            console.log(v)
             setCurType(v.key)
           }}
         >
@@ -68,6 +62,7 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
+    addBlock: payload => dispatch(addBlock(payload)),
     changeCurBlock: payload => dispatch(changeCurBlock(payload)),
   }
 }

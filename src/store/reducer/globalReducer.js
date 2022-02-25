@@ -2,20 +2,17 @@ import {CHANGE_CUR_SCENE, CHANGE_CUR_BLOCK} from "../actions/actionTypes"
 
 const globalReducer = (state = {}, action) => {
   const {type, payload} = action
-  console.log(type, payload)
-
   switch (type) {
     case CHANGE_CUR_SCENE:
-      console.log("----------------------")
-
+      console.log(payload)
       return {
         ...state,
-        curScene: payload.curScene,
+        curScene: payload,
       }
     case CHANGE_CUR_BLOCK:
       return {
         ...state,
-        curBlock: payload.curBlock,
+        curBlock: payload,
       }
     default:
       return state

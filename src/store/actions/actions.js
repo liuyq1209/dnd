@@ -8,7 +8,7 @@ import {
   CHANGE_CUR_BLOCK,
 } from "./actionTypes"
 
-export const addBlocks = props => {
+export const addBlock = props => {
   return {
     type: ADD_BLOCK,
     payload: props,

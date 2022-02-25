@@ -9,16 +9,22 @@ import {
 import store from ".."
 
 const ormReducer = (dbState, action) => {
-  const sess = orm.session(dbState)
-  const {Block, Scene} = sess
+  const session = orm.session(dbState)
+  const {Block, Scene} = session
   const {type, payload} = action
   switch (type) {
     case ADD_BLOCK:
-      Block.create(payload)
-      console.log(dbState)
-      // Scene.withId(store.getState())
-      console.log(Scene.all())
-      // Scene.withId(payload.sceneId).blocks.add(payload.blockId)
+      const bk = Block.create(payload)
+      const scs = Scene.filter(v => v.name === bk.curScene.name).toRefArray()
+      const sc = scs.length ? scs[0] : {}
+      sc.blocks = sc.blocks || []
+      Scene.withId(sc.id).update({blocks: sc.blocks.concat(bk.id)})
+      console.log(
+        "ADD_BLOCK:",
+        Scene.all().toRefArray(),
+        Block.all().toRefArray()
+      )
+
       break
     case CHNAGE_BLOCK_STYLES:
       Block.withId(payload.blockId).update({styles: payload.style})
@@ -28,11 +34,12 @@ const ormReducer = (dbState, action) => {
       break
     case ADD_SCENE:
       Scene.create(payload)
+      console.log("addScene:", Scene.all().toRefArray())
       break
     case CHANGE_SCENE_URL:
       Scene.withId(payload.sceneId).update({url: payload.url})
       break
   }
-  return sess.state
+  return session.state
 }
 export default ormReducer

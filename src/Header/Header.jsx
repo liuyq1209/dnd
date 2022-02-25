@@ -5,9 +5,7 @@ import {Input, Space, Button} from "antd"
 import Styles from "./Header.module.scss"
 
 function Header() {
-  const changeTitle = e => {
-    console.log(e.target.value)
-  }
+  const changeTitle = e => {}
   return (
     <div className={Styles["header-container"]}>
       <Flex justifyContent={"space-around"} alignItems={"center"}>

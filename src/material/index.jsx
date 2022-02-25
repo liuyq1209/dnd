@@ -1,11 +1,11 @@
 import React, {useState} from "react"
 import {Menu} from "antd"
-import BlocksList from "./BlocksList/BlocksList"
-import Scene from "./Scene/Scene"
+import BlocksList from "./BlockList/BlockList"
+import SceneList from "./SceneList/SceneList"
 import Styles from "./index.module.scss"
 
 function index() {
-  const [curTab, setCurTab] = useState("blocks")
+  const [curTab, setCurTab] = useState("scene")
   const handleClick = v => {
     setCurTab(v.key)
   }
@@ -28,7 +28,7 @@ function index() {
           style={{visibility: curTab === "scene" ? "visible" : "hidden"}}
           className={Styles["scene-list-container"]}
         >
-          <Scene></Scene>
+          <SceneList></SceneList>
         </div>
       </div>
     </div>
