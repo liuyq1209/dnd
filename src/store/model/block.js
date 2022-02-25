@@ -1,12 +1,5 @@
 import {Model, fk, oneToOne, many, attr} from "redux-orm"
 //fk for many to one, oneToOne for one to one, and many for many to many
-import {
-  ADD_BLOCK,
-  CHNAGE_BLOCK_STYLES,
-  DELETE_BLOCK,
-  ADD_SCENE,
-  CHANGE_SCENE_URL,
-} from "../actions/actionTypes"
 
 class Block extends Model {
   toString() {

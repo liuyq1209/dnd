@@ -1,6 +1,6 @@
 import React, {useEffect} from "react"
 import store from "../../store"
-import {addScene} from "../../store/actions/actions"
+import {addScene, changeCurScene} from "../../store/actions/actions"
 import orm from "../../store/model/orm"
 
 function Scene() {
@@ -11,8 +11,18 @@ function Scene() {
         name: "镜头1",
       })
     )
-    let query = orm.session().Scene.all()
-    console.log(query)
+    store.dispatch(
+      changeCurScene({
+        curScene: {
+          sceneId: 1,
+          name: "镜头1",
+        },
+      })
+    )
+    // const state = store.getState()
+    // let query = orm.session(state).Scene.all()
+    // console.log(state)
+    // console.log(query)
   }, [])
   return <div>Scene</div>
 }

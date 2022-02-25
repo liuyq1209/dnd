@@ -6,6 +6,7 @@ import {
   ADD_SCENE,
   CHANGE_SCENE_URL,
 } from "../actions/actionTypes"
+import store from ".."
 
 const ormReducer = (dbState, action) => {
   const sess = orm.session(dbState)
@@ -14,7 +15,10 @@ const ormReducer = (dbState, action) => {
   switch (type) {
     case ADD_BLOCK:
       Block.create(payload)
-      Scene.withId(payload.sceneId).blocks.add(payload.blockId)
+      console.log(dbState)
+      // Scene.withId(store.getState())
+      console.log(Scene.all())
+      // Scene.withId(payload.sceneId).blocks.add(payload.blockId)
       break
     case CHNAGE_BLOCK_STYLES:
       Block.withId(payload.blockId).update({styles: payload.style})

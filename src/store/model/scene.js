@@ -1,11 +1,4 @@
 import {Model, fk, many, attr} from "redux-orm"
-import {
-  ADD_BLOCK,
-  CHNAGE_BLOCK_STYLES,
-  DELETE_BLOCK,
-  ADD_SCENE,
-  CHANGE_SCENE_URL,
-} from "../actions/actionTypes"
 
 class Scene extends Model {
   toString() {
