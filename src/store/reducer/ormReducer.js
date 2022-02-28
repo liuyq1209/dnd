@@ -4,6 +4,7 @@ import {
   CHNAGE_BLOCK_STYLES,
   DELETE_BLOCK,
   ADD_SCENE,
+  DELETE_SCENE,
   CHANGE_SCENE_URL,
 } from "../actions/actionTypes"
 import store from ".."
@@ -12,6 +13,7 @@ const ormReducer = (dbState, action) => {
   const session = orm.session(dbState)
   const {Block, Scene} = session
   const {type, payload} = action
+  console.log(type, payload)
   switch (type) {
     case ADD_BLOCK:
       const bk = Block.create(payload)
@@ -35,6 +37,9 @@ const ormReducer = (dbState, action) => {
     case ADD_SCENE:
       Scene.create(payload)
       console.log("addScene:", Scene.all().toRefArray())
+      break
+    case DELETE_SCENE:
+      Scene.withId(payload.id).delete()
       break
     case CHANGE_SCENE_URL:
       Scene.withId(payload.sceneId).update({url: payload.url})

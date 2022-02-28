@@ -2,12 +2,12 @@ import React, {useState} from "react"
 import {Menu, Space} from "antd"
 import {menu, componentsList} from "./block.config"
 import {Flex} from "rebass"
-import Styles from "./BlocksList.module.scss"
 import DragBlocks from "../../components/DragBlocks/DragBlocks"
 import {connect} from "react-redux"
 import store from "../../store"
 import orm from "../../store/model/orm"
 import {addBlock, changeCurBlock} from "../../store/actions/actions"
+import Styles from "./BlockList.module.scss"
 
 function BlocksList({globalReducer, ormReducer, addBlock, changeCurBlock}) {
   const [curType, setCurType] = useState("pc-click")

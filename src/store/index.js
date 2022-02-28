@@ -12,4 +12,11 @@ import appReducer from "./reducer/reducer"
 //   },
 // })
 const store = createStore(appReducer)
+// store.subscribe(
+//   throttle(() => {
+//     saveState({
+//       todos: store.getState().todos,
+//     })
+//   }, 1000)
+// )
 export default store

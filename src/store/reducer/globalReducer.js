@@ -4,7 +4,6 @@ const globalReducer = (state = {}, action) => {
   const {type, payload} = action
   switch (type) {
     case CHANGE_CUR_SCENE:
-      console.log(payload)
       return {
         ...state,
         curScene: payload,

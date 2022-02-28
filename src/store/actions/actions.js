@@ -3,6 +3,7 @@ import {
   CHNAGE_BLOCK_STYLES,
   DELETE_BLOCK,
   ADD_SCENE,
+  DELETE_SCENE,
   CHANGE_SCENE_URL,
   CHANGE_CUR_SCENE,
   CHANGE_CUR_BLOCK,
@@ -29,6 +30,12 @@ export const deleteBlock = id => {
 export const addScene = props => {
   return {
     type: ADD_SCENE,
+    payload: props,
+  }
+}
+export const deleteScene = props => {
+  return {
+    type: DELETE_SCENE,
     payload: props,
   }
 }

@@ -1,3 +1,26 @@
 .scenelist-container {
   height: 100%;
+  :global .ant-tree-title {
+    display: inline-block;
+  }
+  .scene-name {
+  }
+  .scene-operate {
+    position: absolute;
+    right: 0px;
+    width: 40px;
+    text-align: center;
+    &:hover {
+      .operate-container {
+        display: block;
+      }
+    }
+    .operate-container {
+      display: none;
+      position: absolute;
+      right: -75px;
+      top: 0;
+      z-index: 1;
+    }
+  }
 }
