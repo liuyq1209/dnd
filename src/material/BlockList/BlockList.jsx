@@ -3,20 +3,27 @@ import {Menu, Space} from "antd"
 import {menu, componentsList} from "./block.config"
 import {Flex} from "rebass"
 import DragBlocks from "../../components/DragBlocks/DragBlocks"
-import {connect} from "react-redux"
 import store from "../../store"
 import orm from "../../store/model/orm"
+import ReduxWrapToProps from "../../components/ReduxWrapToProps/ReduxWrapToProps"
 import {addBlock, changeCurBlock} from "../../store/actions/actions"
 import Styles from "./BlockList.module.scss"
 
 function BlocksList({globalReducer, ormReducer, addBlock, changeCurBlock}) {
   const [curType, setCurType] = useState("pc-click")
   const didDrop = v => {
+    const bks = orm.session(ormReducer).Block.all().toRefArray()
+    console.log(bks)
     addBlock({
       ...v,
+      id: bks.length,
       curScene: globalReducer.curScene,
     })
-    changeCurBlock(v)
+    changeCurBlock({
+      ...v,
+      id: bks.length,
+      curScene: globalReducer.curScene,
+    })
   }
   return (
     <Flex justifyContent={"space-between"}>
@@ -57,14 +64,7 @@ function BlocksList({globalReducer, ormReducer, addBlock, changeCurBlock}) {
   )
 }
 
-function mapStateToProps(state) {
-  return state
-}
-function mapDispatchToProps(dispatch) {
-  return {
-    addBlock: payload => dispatch(addBlock(payload)),
-    changeCurBlock: payload => dispatch(changeCurBlock(payload)),
-  }
-}
-const BlocksListWrap = connect(mapStateToProps, mapDispatchToProps)(BlocksList)
-export default BlocksListWrap
+export default ReduxWrapToProps({
+  Component: BlocksList,
+  actions: {addBlock, changeCurBlock},
+})

@@ -48,14 +48,12 @@ const menu = [
 const componentsList = [
   {
     type: "pc-click",
-    name: "btnPrimary",
-    label: "经典按钮",
+    name: "经典按钮",
     content: ButtonPrimary,
   },
   {
     type: "pc-click",
-    name: "btnHand",
-    label: "手型按钮",
+    name: "手型按钮",
     content: ButtonHand,
   },
 ]

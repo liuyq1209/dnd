@@ -18,10 +18,16 @@ function index() {
         </Menu>
       </div>
       <div className={Styles["list-container"]}>
-        <div style={{visibility: curTab === "style" ? "visible" : "hidden"}}>
+        <div
+          style={{visibility: curTab === "style" ? "visible" : "hidden"}}
+          className={Styles["style-list-container"]}
+        >
           <StyleSetting></StyleSetting>
         </div>
-        <div style={{visibility: curTab === "event" ? "visible" : "hidden"}}>
+        <div
+          style={{visibility: curTab === "event" ? "visible" : "hidden"}}
+          className={Styles["event-list-container"]}
+        >
           <EventSetting></EventSetting>
         </div>
       </div>

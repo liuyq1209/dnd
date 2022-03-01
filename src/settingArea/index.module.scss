@@ -5,6 +5,14 @@
     // width: 100%;
   }
   .list-container {
+    position: relative;
+    height: calc(100% - 46px);
     background-color: #fff;
+    .style-list-container,
+    .event-list-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
   }
 }

@@ -1,6 +1,7 @@
 import {
   ADD_BLOCK,
   CHNAGE_BLOCK_STYLES,
+  CHNAGE_BLOCK_ATTR,
   DELETE_BLOCK,
   ADD_SCENE,
   DELETE_SCENE,
@@ -18,6 +19,12 @@ export const addBlock = props => {
 export const changeBlockStyles = props => {
   return {
     type: CHNAGE_BLOCK_STYLES,
+    payload: props,
+  }
+}
+export const changeBlockAttr = props => {
+  return {
+    type: CHNAGE_BLOCK_ATTR,
     payload: props,
   }
 }

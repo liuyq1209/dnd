@@ -1,0 +1,12 @@
+.formitem-container {
+  height: 100%;
+  overflow: auto;
+  :global .ant-collapse-header {
+    font-weight: bold;
+  }
+
+  .input-number-name {
+    display: inline-block;
+    width: 80px;
+  }
+}

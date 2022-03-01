@@ -1,5 +1,6 @@
 export const ADD_BLOCK = "ADD_BLOCK"
 export const CHNAGE_BLOCK_STYLES = "CHNAGE_BLOCK_STYLES"
+export const CHNAGE_BLOCK_ATTR = "CHNAGE_BLOCK_ATTR"
 export const DELETE_BLOCK = "DELETE_BLOCK"
 
 export const ADD_SCENE = "ADD_SCENE"

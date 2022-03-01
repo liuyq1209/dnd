@@ -2,9 +2,10 @@ import React, {useEffect, useState} from "react"
 import store from "../../store"
 import {Menu, Tree} from "antd"
 import {VideoCameraOutlined} from "@ant-design/icons"
-import {connect} from "react-redux"
+import ReduxWrapToProps from "../../components/ReduxWrapToProps/ReduxWrapToProps"
 import {
   addScene,
+  changeCurBlock,
   changeCurScene,
   deleteScene,
 } from "../../store/actions/actions"
@@ -14,12 +15,15 @@ import {arrayToTree} from "./ArrayToTree"
 import {operateList} from "./const"
 import Styles from "./SceneList.module.scss"
 
+//todo:镜头操作时需阻止选中操作
+// todo: 镜头操作样式问题
 function SceneList({
   globalReducer,
   ormReducer,
   addScene,
   deleteScene,
   changeCurScene,
+  changeCurBlock,
 }) {
   const [scenes, setScenes] = useState(
     arrayToTree(orm.session(ormReducer).Scene.all().toRefArray())
@@ -32,12 +36,12 @@ function SceneList({
     changeCurScene({
       name: "镜头1",
       pid: null,
+      id: 0,
     })
   }, [])
   useEffect(() => {
     setScenes(arrayToTree(orm.session(ormReducer).Scene.all().toRefArray()))
   }, [ormReducer])
-  console.log(scenes)
   function SceneItem({item}) {
     const Scene = orm.session(ormReducer).Scene
     const handleMap = {
@@ -122,12 +126,12 @@ function SceneList({
     if (!val.length) {
       return
     }
-    console.log(val, event, "改变了")
     const tar = orm
       .session(ormReducer)
       .Scene.filter(v => v.id == val)
       .toRefArray()
     changeCurScene(tar[0])
+    changeCurBlock(null)
   }
   return (
     <div className={Styles["scenelist-container"]}>
@@ -142,17 +146,7 @@ function SceneList({
     </div>
   )
 }
-
-function mapStateToProps(state) {
-  return state
-}
-function mapDispatchToProps(dispatch) {
-  return {
-    addScene: payload => dispatch(addScene(payload)),
-    deleteScene: payload => dispatch(deleteScene(payload)),
-    changeCurScene: payload => dispatch(changeCurScene(payload)),
-  }
-}
-const SceneListWrap = connect(mapStateToProps, mapDispatchToProps)(SceneList)
-
-export default SceneListWrap
+export default ReduxWrapToProps({
+  Component: SceneList,
+  actions: {addScene, deleteScene, changeCurScene, changeCurBlock},
+})
