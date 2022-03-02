@@ -5,6 +5,7 @@ import {Space} from "antd"
 import orm from "../store/model/orm"
 import {changeCurBlock} from "../store/actions/actions"
 import Styles from "./index.module.scss"
+import Front from "../../front"
 
 function RenderScene({globalReducer, ormReducer, changeCurBlock}) {
   const {Scene, Block} = orm.session(ormReducer)
@@ -45,6 +46,7 @@ function RenderScene({globalReducer, ormReducer, changeCurBlock}) {
               return <div>{JSON.stringify(v)}</div>
             })}
           </div>
+          <div>{/* <Front></Front> */}</div>
         </Space>
       </div>
     </div>
