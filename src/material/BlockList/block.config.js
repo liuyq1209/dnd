@@ -48,11 +48,15 @@ const menu = [
 const componentsList = [
   {
     type: "pc-click",
+    eventType: "click",
+    linkType: "inner",
     name: "经典按钮",
     content: ButtonPrimary,
   },
   {
     type: "pc-click",
+    eventType: "click",
+    linkType: "inner",
     name: "手型按钮",
     content: ButtonHand,
   },
