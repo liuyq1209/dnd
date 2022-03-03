@@ -129,7 +129,7 @@
               "width": "100px",
               "height": "200px",
               "box-shadow": "2px 2px",
-              "radius": "10px",
+              "border-radius": "10px",
               "color": "red"
             },
             "eventType": "click",

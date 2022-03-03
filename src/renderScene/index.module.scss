@@ -7,5 +7,14 @@
     left: 0;
     width: 100%;
     height: 100%;
+    .com-wrap {
+      border: 1px solid rgba(0, 0, 0, 0);
+      &.com-wrap-active {
+        border: 1px dashed green;
+      }
+      &:hover {
+        border: 1px dashed green;
+      }
+    }
   }
 }

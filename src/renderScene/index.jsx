@@ -4,8 +4,9 @@ import ReduxWrapToProps from "../components/ReduxWrapToProps/ReduxWrapToProps"
 import {Space} from "antd"
 import orm from "../store/model/orm"
 import {changeCurBlock} from "../store/actions/actions"
-import Styles from "./index.module.scss"
 import {blocksList} from "../material/BlockList/block.config"
+import cx from "classnames"
+import Styles from "./index.module.scss"
 
 function RenderScene({globalReducer, ormReducer, changeCurBlock}) {
   const {Scene, Block} = orm.session(ormReducer)
@@ -26,8 +27,8 @@ function RenderScene({globalReducer, ormReducer, changeCurBlock}) {
           <div>当前block:{JSON.stringify(globalReducer?.curBlock)}</div>
           <div>当前Scene:{JSON.stringify(globalReducer?.curScene)}</div>
           <div>
-            所有的blocks:
-            {bks.map(v => {
+            当前的blocks:
+            {curBks.map(v => {
               return <div>{JSON.stringify(v)}</div>
             })}
           </div>
@@ -36,6 +37,12 @@ function RenderScene({globalReducer, ormReducer, changeCurBlock}) {
               const c = blocksList.find(b => b.key === v.key)
               return (
                 <div
+                  className={cx({
+                    [Styles["com-wrap"]]: true,
+                    [Styles["com-wrap-active"]]:
+                      v.id === globalReducer?.curBlock?.id,
+                  })}
+                  style={v.styles}
                   onClick={() => {
                     changeCurBlock(v)
                   }}
