@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react"
-import {Collapse, Divider, Radio, Space, Button} from "antd"
+import {Collapse, Divider, Radio, Space, Button, Modal} from "antd"
+import {CheckOutlined} from "@ant-design/icons"
 import Styles from "./index.module.scss"
 import {list, score} from "./data"
 import useLocalStorage from "./hooks/useLocalStorage/useLocalStorage"
@@ -10,7 +11,13 @@ function index() {
   const [localScore, setLocalScore] = useLocalStorage("score", {})
   const [chartsData, setChartsData] = useState([])
 
-  const showAnswer = () => {}
+  const showAnswer = item => {
+    console.log(item)
+    Modal.info({
+      title: item.title,
+      content: item.content,
+    })
+  }
   const changeScore = (target, val) => {
     const newV = {[target.id]: val}
     setLocalScore({...localScore, ...newV})
@@ -18,23 +25,23 @@ function index() {
   const changeChartsData = () => {
     const valueMap = {
       1: {
-        name: "很差",
+        name: "没了解过",
         value: 0,
       },
       2: {
-        name: "差",
+        name: "不太了解",
         value: 0,
       },
       3: {
-        name: "中",
+        name: "一般",
         value: 0,
       },
       4: {
-        name: "良好",
+        name: "掌握还可以",
         value: 0,
       },
       5: {
-        name: "好",
+        name: "掌握还不错",
         value: 0,
       },
     }
@@ -123,6 +130,7 @@ function index() {
                     }
                     return (
                       <div>
+                        {!!t.content && <CheckOutlined />}
                         <span
                           className={Styles["queation-title"]}
                           title="点击查看答案"

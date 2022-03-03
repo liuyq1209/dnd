@@ -5,22 +5,84 @@ const list = [
     children: [
       {
         title: "样式选择器优先级",
-        content: "",
+        content: (
+          <div>
+            <p>5:!important </p>
+            <p>4:内联</p>
+            <p>3:id</p>
+            <p>2:类/属性/伪类</p>
+            <p>1:标签</p>
+          </div>
+        ),
         id: "1-1",
       },
       {
         title: "position属性值",
-        content: "",
         id: "1-2",
+        content: (
+          <div>
+            <div>absolute 、relative、fixed</div>
+            <div>static：默认值。没有定位，元素出现在正常的流中</div>
+            <div>
+              sticky：元素先按照普通文档流定位，然后相对于该元素在流中的 flow
+              root（BFC）和 containing block（最近的块级祖先元素）定位。
+              <p>1.父元素不能overflow:hidden或者overflow:auto属性。</p>
+              <p>
+                2.必须指定top、bottom、left、right4个值之一，否则只会处于相对定位
+              </p>
+              <p>3.父元素的高度不能低于sticky元素的高度</p>
+              <p>4、sticky元素仅在其父元素内生效</p>
+            </div>
+          </div>
+        ),
       },
       {
         title: "盒模型",
-        content: "",
         id: "1-3",
+        content: (
+          <div>
+            <h5>
+              CSS 盒模型本质上是一个盒子，封装周围的 HTML
+              元素，它包括：边距，边框，填充，和实际内容。
+            </h5>
+            <p>标准盒模型(content-box):width和height指的是内容区域的宽和高</p>
+            <p>
+              怪异盒模型(border-box):width和height指的是内容+边框+内边距的总宽高
+            </p>
+          </div>
+        ),
       },
       {
         title: "BFC",
-        content: "",
+        content: (
+          <div>
+            <h4>块级格式化上下文: 一个独立的渲染区域。</h4>
+            <div>
+              <h4>触发BFC</h4>
+              <p>1、浮动元素，float 除 none 以外的值；</p>
+              <p>2、定位元素，position（absolute，fixed）；</p>
+              <p>
+                3、display 为以下其中之一的值
+                inline-block，table-cell，table-caption；
+              </p>
+              <p>4、overflow 除了 visible 以外的值（hidden，auto，scroll）；</p>
+            </div>
+            <div>
+              <h4>BFC 特性：</h4>
+              1.内部的 Box 会在垂直方向上一个接一个的放置；
+              <br />
+              <br />
+              2.垂直方向上的距离由margin 决定；（解决外边距重叠问题）
+              <br />
+              3.bfc 的区域不会与 float 的元素区域重叠；（防止浮动文字环绕）
+              <br />
+              4.计算 bfc 的高度时，浮动元素也参与计算；（清除浮动）
+              <br />
+              5.bfc 就是页面上的一个独立容器，容器里面的子元素不会影响外面元素；
+              <br />
+            </div>
+          </div>
+        ),
         id: "1-4",
       },
       {
@@ -62,42 +124,42 @@ const list = [
       {
         title: "垃圾回收",
         content: "",
-        id: "2-3",
+        id: "2-4",
       },
       {
         title: "作用域",
         content: "",
-        id: "2-4",
+        id: "2-5",
       },
       {
         title: "闭包",
         content: "",
-        id: "2-5",
+        id: "2-6",
       },
       {
         title: "原型和原型链",
         content: "",
-        id: "2-6",
+        id: "2-7",
       },
       {
         title: "new",
         content: "",
-        id: "2-7",
+        id: "2-8",
       },
       {
         title: "事件循环(浏览器和node)",
         content: "",
-        id: "2-8",
+        id: "2-9",
       },
       {
         title: "异步函数",
         content: "",
-        id: "2-9",
+        id: "2-10",
       },
       {
         title: "防抖节流",
         content: "",
-        id: "2-10",
+        id: "2-11",
       },
     ],
   },
@@ -336,23 +398,23 @@ const list = [
 
 const score = [
   {
-    label: "很差",
+    label: "没了解过",
     value: 1,
   },
   {
-    label: "差",
+    label: "不太了解",
     value: 2,
   },
   {
-    label: "中等",
+    label: "一般",
     value: 3,
   },
   {
-    label: "良好",
+    label: "掌握还可以",
     value: 4,
   },
   {
-    label: "好",
+    label: "掌握还不错",
     value: 5,
   },
 ]

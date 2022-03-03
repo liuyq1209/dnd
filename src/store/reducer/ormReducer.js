@@ -36,7 +36,11 @@ const ormReducer = (dbState, action) => {
       break
     case CHNAGE_BLOCK_ATTR:
       bk = Block.withId(payload.blockId)
-      bk.update({[payload.field]: payload.value})
+      if (payload.field === "props") {
+        bk.update({[payload.field]: {...bk.props, ...payload.value}})
+      } else {
+        bk.update({[payload.field]: payload.value})
+      }
       break
     case DELETE_BLOCK:
       Block.withId(payload.blockId).delete()

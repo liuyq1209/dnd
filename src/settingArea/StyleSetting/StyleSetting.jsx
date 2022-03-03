@@ -4,6 +4,7 @@ import FormItem from "../../components/FormItem/FormItem"
 import {changeBlockAttr, changeBlockStyles} from "../../store/actions/actions"
 import {panels} from "./setting.panel"
 import Styles from "./StyleSetting.module.scss"
+import orm from "../../store/model/orm"
 
 function StyleSetting({
   globalReducer,
@@ -21,8 +22,14 @@ function StyleSetting({
       })
       return
     }
-    //todo:改变按钮的文案
     if (field === "text") {
+      changeBlockAttr({
+        blockId: globalReducer.curBlock.id,
+        field: "props",
+        value: {
+          text: value,
+        },
+      })
       return
     }
     changeBlockStyles({
@@ -32,13 +39,28 @@ function StyleSetting({
       },
     })
   }
+  //根据id去找到orm中的block的所有配置项
+  const curBkId = globalReducer?.curBlock?.id
+  const bk = orm.session(ormReducer).Block.withId(curBkId)
+  console.log(bk)
   return globalReducer.curBlock ? (
     <FormItem
-      attributes={panels}
+      attributes={panels.map(v => {
+        v.content = v.content.map(c => {
+          if (c.field == "text") {
+            c.props = {...c.props, value: bk.props?.text}
+          }
+          if (c.field == "name") {
+            c.props = {...c.props, value: bk.name}
+          }
+          return c
+        })
+        return v
+      })}
       onChange={(field, value) => handleChange(field, value)}
     ></FormItem>
   ) : (
-    <div className={Styles["no-blocks"]}>请选择一个组件</div>
+    <div className={Styles["no-block"]}>请选择一个组件</div>
   )
 }
 export default ReduxWrapToProps({

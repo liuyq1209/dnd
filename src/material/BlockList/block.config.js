@@ -45,12 +45,16 @@ const menu = [
     ],
   },
 ]
-const componentsList = [
+const blocksList = [
   {
     type: "pc-click",
     eventType: "click",
     linkType: "inner",
     name: "经典按钮",
+    key: "btn-primary",
+    props: {
+      text: "我是一个按钮",
+    },
     content: ButtonPrimary,
   },
   {
@@ -58,7 +62,8 @@ const componentsList = [
     eventType: "click",
     linkType: "inner",
     name: "手型按钮",
+    key: "btn-hand",
     content: ButtonHand,
   },
 ]
-export {menu, componentsList}
+export {menu, blocksList}

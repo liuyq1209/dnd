@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 import {Menu, Space} from "antd"
-import {menu, componentsList} from "./block.config"
+import {menu, blocksList} from "./block.config"
 import {Flex} from "rebass"
 import DragBlocks from "../../components/DragBlocks/DragBlocks"
 import store from "../../store"
@@ -48,13 +48,13 @@ function BlocksList({globalReducer, ormReducer, addBlock, changeCurBlock}) {
         </Menu>
       </div>
       <Space className={Styles["components"]} wrap direction="vertical">
-        {componentsList
+        {blocksList
           .filter(v => v.type === curType)
           .map(v => {
             const com = (
-              <div key={v.id}>
+              <div key={v.id} className={Styles["com-wrap"]}>
                 {React.createElement(v.content)}
-                {v.name}
+                <div className={Styles["com-name"]}>{v.name}</div>
               </div>
             )
             return <DragBlocks com={com} val={v} didDrop={didDrop} />

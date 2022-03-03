@@ -5,7 +5,7 @@ import {Space} from "antd"
 import orm from "../store/model/orm"
 import {changeCurBlock} from "../store/actions/actions"
 import Styles from "./index.module.scss"
-import Front from "../../front"
+import {blocksList} from "../material/BlockList/block.config"
 
 function RenderScene({globalReducer, ormReducer, changeCurBlock}) {
   const {Scene, Block} = orm.session(ormReducer)
@@ -17,6 +17,7 @@ function RenderScene({globalReducer, ormReducer, changeCurBlock}) {
     },
   })
   const bks = Block.all().toRefArray()
+  const curBks = bks.filter(v => v.curScene.id === globalReducer.curScene.id)
   return (
     <div className={Styles["scene-container"]}>
       <video src=""></video>
@@ -25,28 +26,25 @@ function RenderScene({globalReducer, ormReducer, changeCurBlock}) {
           <div>当前block:{JSON.stringify(globalReducer?.curBlock)}</div>
           <div>当前Scene:{JSON.stringify(globalReducer?.curScene)}</div>
           <div>
-            当前scene的block:{" "}
-            {bks
-              .filter(v => v.curScene.id === globalReducer.curScene.id)
-              .map(v => {
-                return (
-                  <div
-                    onClick={() => {
-                      changeCurBlock(v)
-                    }}
-                  >
-                    {JSON.stringify(v)}
-                  </div>
-                )
-              })}
-          </div>
-          <div>
             所有的blocks:
             {bks.map(v => {
               return <div>{JSON.stringify(v)}</div>
             })}
           </div>
-          <div>{/* <Front></Front> */}</div>
+          <div>
+            {curBks.map(v => {
+              const c = blocksList.find(b => b.key === v.key)
+              return (
+                <div
+                  onClick={() => {
+                    changeCurBlock(v)
+                  }}
+                >
+                  {React.createElement(c.content, v.props)}
+                </div>
+              )
+            })}
+          </div>
         </Space>
       </div>
     </div>
