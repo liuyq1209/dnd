@@ -57,7 +57,9 @@ function BlocksList({globalReducer, ormReducer, addBlock, changeCurBlock}) {
                 <div className={Styles["com-name"]}>{v.name}</div>
               </div>
             )
-            return <DragBlocks com={com} val={v} didDrop={didDrop} />
+            return (
+              <DragBlocks com={com} val={v} didDrop={didDrop} type="blocks" />
+            )
           })}
       </Space>
     </Flex>

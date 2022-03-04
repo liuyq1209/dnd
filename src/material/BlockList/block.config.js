@@ -52,6 +52,9 @@ const blocksList = [
     linkType: "inner",
     name: "经典按钮",
     key: "btn-primary",
+    styles: {
+      position: "absolute",
+    },
     props: {
       text: "我是一个按钮",
     },
@@ -63,6 +66,9 @@ const blocksList = [
     linkType: "inner",
     name: "手型按钮",
     key: "btn-hand",
+    styles: {
+      position: "absolute",
+    },
     content: ButtonHand,
   },
 ]

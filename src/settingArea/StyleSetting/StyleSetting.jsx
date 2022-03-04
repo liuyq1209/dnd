@@ -42,16 +42,24 @@ function StyleSetting({
   //根据id去找到orm中的block的所有配置项
   const curBkId = globalReducer?.curBlock?.id
   const bk = orm.session(ormReducer).Block.withId(curBkId)
-  console.log(bk)
   return globalReducer.curBlock ? (
     <FormItem
       attributes={panels.map(v => {
         v.content = v.content.map(c => {
           if (c.field == "text") {
             c.props = {...c.props, value: bk.props?.text}
+            return c
           }
           if (c.field == "name") {
             c.props = {...c.props, value: bk.name}
+            return c
+          }
+          if (bk?.styles[c.field]) {
+            c.props = {...c.props, value: parseInt(bk?.styles[c.field])}
+            return c
+          } else {
+            c.props = {...c.props, value: ""}
+            return c
           }
           return c
         })

@@ -7,7 +7,6 @@ import orm from "../../store/model/orm"
 import Styles from "./EventSetting.module.scss"
 
 function EventSetting({globalReducer, ormReducer, changeBlockAttr}) {
-  console.log(globalReducer)
   const scenesList = orm.session(ormReducer).Scene.all().toRefArray()
   const [linkType, setLinkType] = useState(jumpType[0].linkType)
   const changeAttr = (field, value) => {

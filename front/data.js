@@ -87,18 +87,72 @@ const list = [
       },
       {
         title: "水平垂直居中",
-        content: "",
         id: "1-5",
+        content: (
+          <div>
+            <h4>文本居中:</h4>
+            <h4>盒子居中:</h4>
+            <div>
+              <h5>已知宽高:margin/绝对定位</h5>
+              <h5>未知宽高:</h5>
+              <div>margin:auto/flex/translates</div>
+            </div>
+          </div>
+        ),
       },
       {
         title: "flex布局",
-        content: "",
         id: "1-6",
+        content: (
+          <div>
+            <div>
+              flex-direction/flex-wrap = flex-flow <br />
+              justify-content align-items align-content
+            </div>
+            <div>
+              <div>flex:1 === flex: 1 1 auto</div>
+              <p>
+                第一个参数表示: flex-grow
+                定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大
+              </p>
+              <p>
+                第二个参数表示: flex-shrink
+                定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小
+              </p>
+              <p>
+                第三个参数表示: flex-basis给上面两个属性分配多余空间之前,
+                计算项目是否有多余空间, 默认值为 auto, 即项目本身的大小
+              </p>
+            </div>
+          </div>
+        ),
       },
       {
         title: "浏览器兼容性",
-        content: "",
         id: "1-7",
+        content: (
+          <div>
+            <a
+              target="_blank"
+              href="https://juejin.cn/post/6971312765356998687"
+            >
+              参考链接
+            </a>
+            <h4>HTML兼容</h4>
+            <div>高级标签无法使用,统一使用基础标签开发(div,p,span)</div>
+            <h4>CSS兼容</h4>
+            <div>
+              <h5>1.不同浏览器的默认样式不同 (reset.css重置)</h5>
+              <h5>2.不同浏览器margin,padding不同(reset.css重置)</h5>
+              <h5>3不同浏览器支持属性不同 (需要兼容时,不使用高级样式)</h5>
+            </div>
+            <h4>JS兼容</h4>
+            <div>
+              适配写法(比如冒泡,事件处理等)
+              使用babel将高版本js打包为低版本(IE7-11不支持ES6)
+            </div>
+          </div>
+        ),
       },
     ],
   },
