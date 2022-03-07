@@ -161,39 +161,146 @@ const list = [
     title: "js",
     children: [
       {
-        title: "基本数据类型",
-        content: "",
+        title: "数据类型",
+        content: (
+          <div>
+            <h4>基本数据类型</h4>
+            undefined：typeof instance === "undefined" <br />
+            null：typeof instance === 'object'
+            <br />
+            boolean：typeof instance === "boolean"
+            <br />
+            number：typeof instance === "number"
+            <br />
+            string：typeof instance === "string"
+            <br />
+            symbol ：typeof instance === "symbol"
+            <br />
+            <div>
+              <h4>复杂数据类型</h4>
+              Object, Function, Date
+            </div>
+            <div>
+              <h4>
+                typeof可以检测如下六种数据类型:
+                number、string、boolean、object、undefined、function
+              </h4>
+              <h4>
+                instansof用于检测某个对象的原型链是否包含某个构造函数的
+                prototype 属性
+              </h4>
+            </div>
+          </div>
+        ),
         id: "2-1",
       },
       {
         title: "数据类型检测方案",
-        content: "",
         id: "2-2",
+        content: (
+          <div>
+            <h4>四种数据类型检测方案</h4>
+            <p>1.typeof检测基本数据类型(null除外)</p>
+            <p>2.instanceof检测原型链</p>
+            <p>
+              3.检测当前对象的构造函数 var o = new Object();
+              console.log(o.constructor == Object); // true
+            </p>
+            <p>
+              4.Object.prototype.toString.call()
+              <div>Object.prototype.toString.call({}) // "[object Object]"</div>
+            </p>
+          </div>
+        ),
       },
       {
         title: "var let const",
-        content: "",
         id: "2-3",
+        content: (
+          <div>
+            <h4>1.var有变量提升,let则没有</h4>
+            <h4>
+              2.因为var有变量提升,所以var会存在暂时性死区; undefined;let会报错
+            </h4>
+            <h4>
+              3.因为var有变量提升,所以var在循环中声明,多次循环会共享一个变量;let则是每次循环都生成自己的函数作用域
+            </h4>
+            <h4>let上js拥有了块级作用域</h4>
+          </div>
+        ),
       },
       {
         title: "垃圾回收",
-        content: "",
         id: "2-4",
+        content: (
+          <div>
+            <div>
+              <h4>栈内存垃圾回收</h4>
+              <div>ESP指针记录当前执行状态</div>
+            </div>
+            <div>
+              <h4>堆内存垃圾回收</h4>
+              <div>
+                <div>
+                  副垃圾回收器:新生代 ;<br />
+                  新生代分为对象区域和空闲区域;
+                  <br />
+                  对象区域满了之后进行一次垃圾回收,将还存在的对象复制到空闲区域,空时将对象区域和空闲区域进行翻转;
+                  <br />
+                  如果经过两次翻转还存在的对象会被复制到老生区中
+                  <br />
+                </div>
+                <div>
+                  主垃圾回收器:老生代;对象占用空间大,对象存活时间长
+                  <br />
+                  遍历调用栈,找到并标记垃圾数据和活动数据 <br />
+                  清除垃圾数据
+                  <br />
+                  标记-清除 算法还有优化空间;比如标记-整理等等
+                </div>
+              </div>
+            </div>
+            <div>
+              <h4>避免内存泄漏</h4>
+              <div>
+                少用闭包;手动清除定时器;手动清除事件监听器;少使用全局变量
+              </div>
+            </div>
+          </div>
+        ),
       },
       {
         title: "作用域",
-        content: "",
         id: "2-5",
+        content: (
+          <div>
+            <h4>全局作用域</h4>
+            <div>如果您为尚未声明的变量赋值，此变量会自动成为全局变量。</div>
+            <div>任何函数都可以改变全局变量,所以要尽量少的使用全局变量</div>
+            <h4>局部作用域</h4>
+            <div>每个函数创建一个新的作用域;作用域决定了变量的可访问性</div>
+          </div>
+        ),
       },
       {
         title: "闭包",
-        content: "",
         id: "2-6",
+        content: (
+          <div>
+            <h4>
+              定义:一个函数返回值是另一个函数,导致在该函数的作用域外部还能访问到该函数的内部变量
+              <div>
+                (包括定时器,事件监听器等,也会导致在作用域外部访问函数内部变量的问题)
+              </div>
+            </h4>
+            <div>无法进行垃圾回收,导致内存泄漏</div>
+          </div>
+        ),
       },
       {
         title: "原型和原型链",
-        content: "",
         id: "2-7",
+        content: <div></div>,
       },
       {
         title: "new",
@@ -204,16 +311,6 @@ const list = [
         title: "事件循环(浏览器和node)",
         content: "",
         id: "2-9",
-      },
-      {
-        title: "异步函数",
-        content: "",
-        id: "2-10",
-      },
-      {
-        title: "防抖节流",
-        content: "",
-        id: "2-11",
       },
     ],
   },

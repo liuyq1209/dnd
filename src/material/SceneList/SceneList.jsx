@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react"
 import store from "../../store"
-import {Menu, Tree} from "antd"
+import {Menu, message, Tree} from "antd"
 import {VideoCameraOutlined} from "@ant-design/icons"
 import ReduxWrapToProps from "../../components/ReduxWrapToProps/ReduxWrapToProps"
 import {
@@ -64,11 +64,17 @@ function SceneList({
         })
       },
       delete: cur => {
+        if (Scene.all().toRefArray().length <= 1) {
+          message.warn("请至少保留一个镜头")
+          return
+        }
         deleteScene({
           id: cur.id,
         })
+        changeCurScene(null)
       },
     }
+
     const handleOperate = type => {
       handleMap[type](item)
     }

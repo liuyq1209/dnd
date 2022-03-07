@@ -46,10 +46,10 @@ export const deleteScene = props => {
     payload: props,
   }
 }
-export const changeSceneUrl = id => {
+export const changeSceneUrl = props => {
   return {
     type: CHANGE_SCENE_URL,
-    payload: id,
+    payload: props,
   }
 }
 

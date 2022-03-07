@@ -17,7 +17,7 @@ function EventSetting({globalReducer, ormReducer, changeBlockAttr}) {
       value,
     })
   }
-  return globalReducer.curBlock ? (
+  return globalReducer.curBlock && globalReducer.curScene ? (
     <div className={Styles["event-setting-container"]}>
       <Space direction="vertical">
         <div>

@@ -1,8 +1,16 @@
 import React from "react"
-import {Button} from "antd"
+import Styles from "./ButtonPrimary.module.scss"
 
-function ButtonPrimary({text = "我是一个按钮"}) {
-  return <Button type="primary">{text}</Button>
+function ButtonPrimary({text = "我是一个按钮", ...res}) {
+  const style = {
+    ...res,
+    boxShadow: `${res["shadow-x"]} ${res["shadow-y"]} ${res["shadow-blur"]} ${res["shadow-spread"]}`,
+  }
+  return (
+    <div className={Styles["btn-primary"]} style={style}>
+      <span> {text}</span>
+    </div>
+  )
 }
 
 export default ButtonPrimary

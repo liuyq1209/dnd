@@ -22,12 +22,6 @@ const ormReducer = (dbState, action) => {
       const sc = scs.length ? scs[0] : {}
       sc.blocks = sc.blocks || []
       Scene.withId(sc.id).update({blocks: sc.blocks.concat(bk.id)})
-      console.log(
-        "ADD_BLOCK:",
-        Scene.all().toRefArray(),
-        Block.all().toRefArray()
-      )
-
       break
     case CHNAGE_BLOCK_STYLES:
       bk = Block.withId(payload.blockId)
@@ -46,13 +40,29 @@ const ormReducer = (dbState, action) => {
       Block.withId(payload.blockId).delete()
       break
     case ADD_SCENE:
-      Scene.create(payload)
+      //获取当前最大id, +1作为镜头名
+
+      const maxId = Scene.all()
+        .toRefArray()
+        .map(v => v.id)
+        .reduce((pre, cur) => {
+          return Math.max(pre, cur)
+        }, 0)
+      let newId = maxId + 1
+      if (Scene.all().toRefArray().length == 0) {
+        newId = 0
+      }
+      Scene.create({
+        ...payload,
+        name: `镜头${newId + 1}`,
+      })
       break
     case DELETE_SCENE:
       Scene.withId(payload.id).delete()
       break
     case CHANGE_SCENE_URL:
-      Scene.withId(payload.sceneId).update({url: payload.url})
+      console.log(payload)
+      Scene.withId(payload.id).update({url: payload.url})
       break
   }
   return session.state

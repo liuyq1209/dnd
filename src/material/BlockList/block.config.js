@@ -68,6 +68,8 @@ const blocksList = [
     key: "btn-hand",
     styles: {
       position: "absolute",
+      width: "100px",
+      height: "100px",
     },
     content: ButtonHand,
   },
