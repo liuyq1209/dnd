@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react"
 import {useDrop} from "react-dnd"
 import ReduxWrapToProps from "../components/ReduxWrapToProps/ReduxWrapToProps"
-import {Space, Upload, Button} from "antd"
 import {DeleteOutlined, PlusOutlined, UploadOutlined} from "@ant-design/icons"
 import orm from "../store/model/orm"
 import {
@@ -9,36 +8,25 @@ import {
   changeBlockStyles,
   changeCurBlock,
   deleteBlock,
-  changeSceneUrl,
+  changeSceneAttr,
 } from "../store/actions/actions"
 import {blocksList} from "../material/BlockList/block.config"
 import cx from "classnames"
 import Styles from "./index.module.scss"
 import DragBlocks from "../components/DragBlocks/DragBlocks"
+import UploadVideo from "../components/UploadVideo/UploadVideo"
 
 function RenderNoVideo({onChange}) {
-  const props = {
-    name: "file",
-    action: "/api/uploadImg",
-    headers: {
-      authorization: "authorization-text",
-    },
-    showUploadList: false,
-    onChange: info => {
-      const res = info?.file?.response
-      console.log(res)
-      if (res?.code == 200) {
-        onChange?.(res.data.url)
-      }
-    },
-  }
   return (
     <div className={Styles["no-video-container"]}>
-      <Upload {...props}>
-        <div className={Styles["upload-icon"]}>
-          <PlusOutlined />
-        </div>
-      </Upload>
+      <UploadVideo
+        icon={
+          <div className={Styles["upload-icon"]}>
+            <PlusOutlined />
+          </div>
+        }
+        onChange={onChange}
+      ></UploadVideo>
 
       <div className={Styles["upload-text"]}>点击添加视频素材</div>
     </div>
@@ -51,7 +39,7 @@ function RenderScene({
   changeCurBlock,
   deleteBlock,
   changeBlockStyles,
-  changeSceneUrl,
+  changeSceneAttr,
 }) {
   const {Scene, Block} = orm.session(ormReducer)
   const curSc = Scene.withId(globalReducer?.curScene?.id)
@@ -72,7 +60,7 @@ function RenderScene({
         const initTop = bk.styles.top ? parseInt(bk.styles.top) : 0
         const initLeft = bk.styles.left ? parseInt(bk.styles.left) : 0
         changeBlockStyles({
-          blockId: bk.id,
+          id: bk.id,
           //删除按钮导致拖拽错位, 手动+26
           //todo: 还有一定误差,后续有时间继续优化
           styles: {
@@ -84,7 +72,6 @@ function RenderScene({
       }
     },
   })
-  console.log(curSc)
   return (
     <div className={Styles["scene-container"]}>
       {curSc && curSc.url ? (
@@ -132,7 +119,7 @@ function RenderScene({
                     onClick={e => {
                       e.stopPropagation()
                       deleteBlock({
-                        blockId: v.id,
+                        id: v.id,
                       })
                       changeCurBlock(null)
                     }}
@@ -152,10 +139,13 @@ function RenderScene({
         </div>
       ) : curSc ? (
         <RenderNoVideo
-          onChange={url => {
-            changeSceneUrl({
+          onChange={(url, file) => {
+            changeSceneAttr({
               id: globalReducer.curScene.id,
-              url,
+              attr: {
+                url,
+                file,
+              },
             })
           }}
         ></RenderNoVideo>
@@ -167,5 +157,5 @@ function RenderScene({
 }
 export default ReduxWrapToProps({
   Component: RenderScene,
-  actions: {changeCurBlock, deleteBlock, changeBlockStyles, changeSceneUrl},
+  actions: {changeCurBlock, deleteBlock, changeBlockStyles, changeSceneAttr},
 })

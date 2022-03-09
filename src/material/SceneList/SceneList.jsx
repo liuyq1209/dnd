@@ -13,6 +13,7 @@ import orm from "../../store/model/orm"
 import {Flex} from "rebass"
 import {arrayToTree} from "./ArrayToTree"
 import {operateList} from "./const"
+import _ from "lodash"
 import Styles from "./SceneList.module.scss"
 
 //todo:镜头操作时需阻止选中操作
@@ -63,6 +64,11 @@ function SceneList({
           pid: cur.pid,
         })
       },
+      copy: cur => {
+        const newOj = _.cloneDeep(cur)
+        delete newOj.id
+        addScene(newOj)
+      },
       delete: cur => {
         if (Scene.all().toRefArray().length <= 1) {
           message.warn("请至少保留一个镜头")
@@ -76,7 +82,7 @@ function SceneList({
     }
 
     const handleOperate = type => {
-      handleMap[type](item)
+      handleMap[type]?.(item)
     }
     return (
       <>

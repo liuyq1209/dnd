@@ -274,6 +274,7 @@ const list = [
         id: "2-5",
         content: (
           <div>
+            <div>作用域就是代码的执行环境</div>
             <h4>全局作用域</h4>
             <div>如果您为尚未声明的变量赋值，此变量会自动成为全局变量。</div>
             <div>任何函数都可以改变全局变量,所以要尽量少的使用全局变量</div>
@@ -300,17 +301,43 @@ const list = [
       {
         title: "原型和原型链",
         id: "2-7",
-        content: <div></div>,
-      },
-      {
-        title: "new",
-        content: "",
-        id: "2-8",
+        content: (
+          <div>
+            <div>
+              定义一个函数数据类型(普通函数、类)时候，都会自带一个 prototype
+              属性，这个属性指向函数的原型对象，并且这个属性是一个对象数据类型的值
+            </div>
+            <div>
+              对象数据类型也自带一个属性 __proto__
+              ，属性值是当前实例所属类的原型(prototype)。原型对象中有一个属性
+              constructor , 它指向函数对象
+            </div>
+            <div>
+              原型链指的是通过prototype对象指向父类对象最后指向Object对象的过程【Object最后为null】
+            </div>
+          </div>
+        ),
       },
       {
         title: "事件循环(浏览器和node)",
-        content: "",
         id: "2-9",
+        content: (
+          <div>
+            宏任务: 包括整体代码script，setTimeout，setInterval <br />
+            微任务: promise, 以及由promise封装而成的axios, fetch等等 <br />
+            <h4>在node中, 主要是增加了两个异步事件</h4>
+            setImmediate: 类似于setTimeout, 是宏任务
+            <br />
+            process.nextTick:是微任务,但是与普通微任务有区别，永远在微任务队列执行之前执行
+            <br />
+            在node11版本之前, 如果宏任务队列中有多个任务,
+            就会依次执行完宏任务再去执行对应的微任务
+            <br />
+            在node11及以后的版本中,
+            改为一旦执行一个阶段里的一个宏任务(setTimeout,setInterval和setImmediate)就立刻执行微任务队列，这就跟浏览器端运行一致
+            <br />
+          </div>
+        ),
       },
     ],
   },
@@ -320,23 +347,52 @@ const list = [
     children: [
       {
         title: "类组件和函数组件区别",
-        content: "",
         id: "3-1",
+        content: (
+          <div>
+            <div>类组件执行时,要实例化;函数组件执行时,直接调用函数</div>
+            <div>
+              <h4>hooks的优点</h4>
+              <div>
+                1.更容易复用代码(最重要) <br />
+                2.副作用统一处理, 不需要维护各个生命周期
+                <br />
+                3.代码可读性更强, 代码风格更简洁清爽
+                <br />
+              </div>
+            </div>
+          </div>
+        ),
       },
       {
         title: "key的作用",
-        content: "",
         id: "3-2",
+        content: (
+          <div>
+            react中的key是用来标识组件的唯一性的;
+            <br />
+            在进行diff操作时,如果key相同,react可以认为是同一个组件,而不需要重复更新渲染
+            <div>(*强制重新渲染问题)</div>
+          </div>
+        ),
       },
       {
         title: "通信方式",
-        content: "",
         id: "3-3",
+        content: <div>props/context/reducer+context/redux</div>,
       },
       {
         title: "setState同步异步问题",
-        content: "",
         id: "3-4",
+        content: (
+          <div>
+            有时异步, 有时同步(setTimeout, DOM事件) <br />
+            有时合并(多次相同的setState会合并, 后面的会覆盖前面的)(对象形式),
+            有时不合并(函数形式)
+            <br />
+            <h4>isBatchingUpdate:主要是看是否命中batchUpdate机制</h4>
+          </div>
+        ),
       },
       {
         title: "v17、v18分别做了什么改动",

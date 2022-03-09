@@ -1,4 +1,8 @@
-import {CHANGE_CUR_SCENE, CHANGE_CUR_BLOCK} from "../actions/actionTypes"
+import {
+  CHANGE_CUR_SCENE,
+  CHANGE_CUR_BLOCK,
+  CHANGE_PAGE_SETTING,
+} from "../actions/actionTypes"
 
 const globalReducer = (state = {}, action) => {
   const {type, payload} = action
@@ -12,6 +16,14 @@ const globalReducer = (state = {}, action) => {
       return {
         ...state,
         curBlock: payload,
+      }
+    case CHANGE_PAGE_SETTING:
+      return {
+        ...state,
+        pageSetting: {
+          ...state.pageSetting,
+          ...payload,
+        },
       }
     default:
       return state

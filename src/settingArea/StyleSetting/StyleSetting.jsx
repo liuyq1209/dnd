@@ -16,7 +16,7 @@ function StyleSetting({
   const handleChange = (field, value) => {
     if (field === "name") {
       changeBlockAttr({
-        blockId: globalReducer.curBlock.id,
+        id: globalReducer.curBlock.id,
         field,
         value,
       })
@@ -24,7 +24,7 @@ function StyleSetting({
     }
     if (field === "text") {
       changeBlockAttr({
-        blockId: globalReducer.curBlock.id,
+        id: globalReducer.curBlock.id,
         field: "props",
         value: {
           text: value,
@@ -33,7 +33,7 @@ function StyleSetting({
       return
     }
     changeBlockStyles({
-      blockId: globalReducer.curBlock.id,
+      id: globalReducer.curBlock.id,
       styles: {
         [field]: value,
       },

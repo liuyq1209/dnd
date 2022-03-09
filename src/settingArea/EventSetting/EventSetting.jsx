@@ -7,16 +7,18 @@ import orm from "../../store/model/orm"
 import Styles from "./EventSetting.module.scss"
 
 function EventSetting({globalReducer, ormReducer, changeBlockAttr}) {
-  const scenesList = orm.session(ormReducer).Scene.all().toRefArray()
-  const [linkType, setLinkType] = useState(jumpType[0].linkType)
+  const {Scene, Block} = orm.session(ormReducer)
+  const scenesList = Scene.all().toRefArray()
+  const curBkId = globalReducer?.curBlock?.id
+  const bk = Block.withId(curBkId)
   const changeAttr = (field, value) => {
-    console.log(globalReducer)
     changeBlockAttr({
-      blockId: globalReducer.curBlock.id,
+      id: globalReducer.curBlock.id,
       field,
       value,
     })
   }
+
   return globalReducer.curBlock && globalReducer.curScene ? (
     <div className={Styles["event-setting-container"]}>
       <Space direction="vertical">
@@ -27,9 +29,8 @@ function EventSetting({globalReducer, ormReducer, changeBlockAttr}) {
         <div>
           <span className={Styles["label"]}>跳转结果：</span>
           <Select
-            defaultValue={linkType}
+            value={bk.linkType}
             onChange={val => {
-              setLinkType(val)
               changeAttr("linkType", val)
             }}
           >
@@ -38,7 +39,7 @@ function EventSetting({globalReducer, ormReducer, changeBlockAttr}) {
             })}
           </Select>
         </div>
-        {linkType === "inner" && (
+        {bk.linkType === "inner" && (
           <div>
             <span className={Styles["label"]}></span>
             <Select
@@ -46,6 +47,7 @@ function EventSetting({globalReducer, ormReducer, changeBlockAttr}) {
               onChange={val => {
                 changeAttr("targetLink", val)
               }}
+              value={bk.targetLink}
             >
               {scenesList
                 .filter(v => v.id != globalReducer.curScene.id)
@@ -55,7 +57,7 @@ function EventSetting({globalReducer, ormReducer, changeBlockAttr}) {
             </Select>
           </div>
         )}
-        {linkType === "outter" && (
+        {bk.linkType === "outter" && (
           <div>
             <span className={Styles["label"]}></span>
             <Input
@@ -64,6 +66,7 @@ function EventSetting({globalReducer, ormReducer, changeBlockAttr}) {
               onChange={e => {
                 changeAttr("targetLink", e.target.value)
               }}
+              value={bk.targetLink}
             ></Input>
           </div>
         )}

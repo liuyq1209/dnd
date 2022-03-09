@@ -1,0 +1,109 @@
+[
+  {
+    "id": "video1",
+    "url": "https://live-s3m.mediav.com/nativevideo/760b9d3b88bf56380af7bffcfcd67873.mp4",
+    "name": "镜头1",
+    "components": [
+      {
+        "id": "com1",
+        "name": "组件1",
+        "key": "btn-primary",
+        "eventType": "click",
+        "linkType": "inner",
+        "targetLink": "video2",
+        "type": "pc-click",
+        "style": {
+          "position": "absolute",
+          "left": "10px",
+          "top": "20px",
+          "width": "100px",
+          "height": "200px",
+          "box-shadow": "2px 2px",
+          "radius": "10px",
+          "color": "red"
+        },
+        "props": {
+          "text": "我是一个按钮"
+        }
+      },
+      {
+        "id": "com2",
+        "name": "组件2",
+        "key": "btn-primary",
+        "eventType": "click",
+        "linkType": "inner",
+        "targetLink": "video3",
+        "type": "pc-click",
+        "style": {
+          "position": "absolute",
+          "left": "10px",
+          "top": "20px",
+          "width": "100px",
+          "height": "200px",
+          "box-shadow": "2px 2px",
+          "radius": "10px",
+          "color": "red"
+        },
+        "props": {
+          "text": "点击查看"
+        }
+      }
+    ]
+  },
+  {
+    "id": "video2",
+    "url": "https://live-s3m.mediav.com/nativevideo/760b9d3b88bf56380af7bffcfcd67873.mp4",
+    "name": "镜头2",
+    "components": [
+      {
+        "id": "com3",
+        "name": "组件3",
+        "key": "btn-primary",
+        "eventType": "click",
+        "linkType": "inner",
+        "targetLink": "video3",
+        "type": "pc-click",
+        "style": {
+          "position": "absolute",
+          "left": "10px",
+          "top": "20px",
+          "width": "100px",
+          "height": "200px",
+          "box-shadow": "2px 2px",
+          "radius": "10px",
+          "color": "red"
+        },
+        "props": {
+          "text": "点击查看"
+        }
+      },
+      {
+        "id": "com4",
+        "name": "组件4",
+        "key": "btn-primary",
+        "eventType": "click",
+        "linkType": "inner",
+        "targetLink": "video3",
+        "type": "pc-click",
+        "style": {
+          "position": "absolute",
+          "left": "10px",
+          "top": "20px",
+          "width": "100px",
+          "height": "200px",
+          "box-shadow": "2px 2px",
+          "radius": "10px",
+          "color": "red"
+        },
+        "props": {
+          "text": "点击查看"
+        }
+      }
+    ]
+  },
+  {
+    "id": "video3",
+    "url": "https://live-s3m.mediav.com/nativevideo/760b9d3b88bf56380af7bffcfcd67873.mp4",
+    "name": "镜头3"
+  }
+]

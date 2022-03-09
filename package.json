@@ -15,6 +15,7 @@
     "classnames": "^2.3.1",
     "echarts": "^5.3.0",
     "echarts-for-react": "^3.0.2",
+    "lodash": "^4.17.21",
     "next": "12.1.0",
     "postcss-import": "^14.0.2",
     "postcss-url": "^10.1.3",

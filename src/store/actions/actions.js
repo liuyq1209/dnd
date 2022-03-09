@@ -5,9 +5,10 @@ import {
   DELETE_BLOCK,
   ADD_SCENE,
   DELETE_SCENE,
-  CHANGE_SCENE_URL,
+  CHANGE_SCENE_ATTR,
   CHANGE_CUR_SCENE,
   CHANGE_CUR_BLOCK,
+  CHANGE_PAGE_SETTING,
 } from "./actionTypes"
 
 export const addBlock = props => {
@@ -46,9 +47,9 @@ export const deleteScene = props => {
     payload: props,
   }
 }
-export const changeSceneUrl = props => {
+export const changeSceneAttr = props => {
   return {
-    type: CHANGE_SCENE_URL,
+    type: CHANGE_SCENE_ATTR,
     payload: props,
   }
 }
@@ -62,6 +63,13 @@ export const changeCurScene = props => {
 export const changeCurBlock = props => {
   return {
     type: CHANGE_CUR_BLOCK,
+    payload: props,
+  }
+}
+
+export const changePageSetting = props => {
+  return {
+    type: CHANGE_PAGE_SETTING,
     payload: props,
   }
 }
