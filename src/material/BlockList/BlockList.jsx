@@ -12,16 +12,22 @@ import Styles from "./BlockList.module.scss"
 function BlocksList({globalReducer, ormReducer, addBlock, changeCurBlock}) {
   const [curType, setCurType] = useState("pc-click")
   const didDrop = v => {
-    const bks = orm.session(ormReducer).Block.all().toRefArray()
-    console.log(bks)
+    const {Block, Scene} = orm.session(ormReducer)
+    const bks = Block.all().toRefArray()
+    const maxId = Scene.all()
+      .toRefArray()
+      .map(v => v.id)
+      .reduce((pre, cur) => {
+        return Math.max(pre, cur)
+      }, 0)
+    console.log(maxId)
     addBlock({
       ...v,
-      id: bks.length,
       curScene: globalReducer.curScene,
     })
     changeCurBlock({
       ...v,
-      id: bks.length,
+      id: Block.all().toRefArray().length == 0 ? 0 : maxId + 1, //新组件的id是maxId+1,redux-orm的规则
       curScene: globalReducer.curScene,
     })
   }

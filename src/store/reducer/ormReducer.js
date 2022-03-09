@@ -20,6 +20,7 @@ const ormReducer = (dbState, action) => {
       const scs = Scene.filter(v => v.name === bk.curScene.name).toRefArray()
       const sc = scs.length ? scs[0] : {}
       sc.blocks = sc.blocks || []
+      //在对应的镜头的blocks字段中添加该组件id
       Scene.withId(sc.id).update({blocks: sc.blocks.concat(bk.id)})
       break
     case CHNAGE_BLOCK_STYLES:
@@ -40,8 +41,8 @@ const ormReducer = (dbState, action) => {
       Block.withId(payload.id).delete()
       break
     case ADD_SCENE:
+      //redux-orm id的规则是取当前id最大值+1
       //获取当前最大id, +1作为镜头名
-
       const maxId = Scene.all()
         .toRefArray()
         .map(v => v.id)

@@ -1,11 +1,12 @@
 .components {
+  flex: 1;
   padding: 20px;
   .com-wrap {
     position: relative;
     // width: 74px;
     padding: 10px;
     height: 74px;
-    background-color: rgba(153, 153, 153, 0.3);
+    background-color: #bbbbbb4d;
     .com-name {
       position: absolute;
       bottom: 0;

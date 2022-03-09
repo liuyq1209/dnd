@@ -54,9 +54,12 @@ const blocksList = [
     key: "btn-primary",
     styles: {
       position: "absolute",
+      width: "220px",
+      height: "58px",
+      borderRadius: "14px",
     },
     props: {
-      text: "我是一个按钮",
+      text: "选项A",
     },
     content: ButtonPrimary,
   },
