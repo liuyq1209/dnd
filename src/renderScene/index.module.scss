@@ -42,9 +42,29 @@
         height: 100%;
       }
     }
+  }
+  .video-container {
     video {
       width: 100%;
       height: 100%;
+    }
+    .play-btn-container {
+      .progressbar {
+        display: inline-block;
+        position: absolute;
+        width: 0;
+        height: 1px;
+        border: 1px solid #4285f4;
+      }
+      .ope-btn {
+        position: absolute;
+        bottom: -34px;
+        .play-btn {
+          margin-left: 20px;
+          color: #4285f4;
+          cursor: pointer;
+        }
+      }
     }
   }
   .no-video-container {

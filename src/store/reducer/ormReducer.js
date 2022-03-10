@@ -43,17 +43,8 @@ const ormReducer = (dbState, action) => {
     case ADD_SCENE:
       //redux-orm id的规则是取当前id最大值+1
       //获取当前最大id, +1作为镜头名
-      const maxId = Scene.all()
-        .toRefArray()
-        .map(v => v.id)
-        .reduce((pre, cur) => {
-          return Math.max(pre, cur)
-        }, 0)
-      let newId = maxId + 1
-      if (Scene.all().toRefArray().length == 0) {
-        newId = 0
-      }
-      console.log(newId)
+      const maxId = dbState?.Scene?.meta?.maxId || 0
+      let newId = Scene.all().toRefArray().length == 0 ? 0 : maxId + 1
       Scene.create({
         ...payload,
         name: `镜头${newId + 1}`,

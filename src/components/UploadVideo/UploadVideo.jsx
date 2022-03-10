@@ -51,7 +51,7 @@ function UploadVideo({icon, onChange}) {
     showUploadList: false,
     onChange: info => {
       const res = info?.file?.response
-      console.log(info, res)
+      // console.log(info, res)
       if (res?.code == 200) {
         onChange?.(res.data.url, info.file)
       }

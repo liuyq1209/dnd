@@ -1,7 +1,12 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import {useDrop} from "react-dnd"
 import ReduxWrapToProps from "../components/ReduxWrapToProps/ReduxWrapToProps"
-import {DeleteOutlined, PlusOutlined, UploadOutlined} from "@ant-design/icons"
+import {
+  DeleteOutlined,
+  PlusOutlined,
+  PlayCircleOutlined,
+  PauseCircleOutlined,
+} from "@ant-design/icons"
 import orm from "../store/model/orm"
 import {
   changeBlockAttr,
@@ -32,7 +37,51 @@ function RenderNoVideo({onChange}) {
     </div>
   )
 }
-
+function RenderVideo({curSc}) {
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
+  const videoRef = useRef()
+  const progressBar = useRef()
+  return (
+    <div className={Styles["video-container"]}>
+      <video
+        src={curSc.url}
+        ref={videoRef}
+        onTimeUpdate={() => {
+          setCurrentTime(videoRef.current.currentTime)
+          progressBar.current.style.width =
+            Math.floor(
+              (videoRef.current.currentTime / videoRef.current.duration) * 100
+            ) + "%"
+        }}
+        onLoadedMetadata={() => {
+          setDuration(videoRef.current.duration)
+        }}
+      ></video>
+      <div className={Styles["play-btn-container"]}>
+        <span ref={progressBar} className={Styles["progressbar"]}></span>
+        <div className={Styles["ope-btn"]}>
+          <span className={Styles.timer}>
+            {parseFloat(currentTime).toFixed(2)}/
+            {parseFloat(duration).toFixed(2)}
+          </span>
+          <span
+            className={Styles["play-btn"]}
+            onClick={() => {
+              if (videoRef.current.paused) {
+                videoRef.current.play()
+              } else {
+                videoRef.current.pause()
+              }
+            }}
+          >
+            播放/暂停
+          </span>
+        </div>
+      </div>
+    </div>
+  )
+}
 function RenderScene({
   globalReducer,
   ormReducer,
@@ -76,18 +125,8 @@ function RenderScene({
     <div className={Styles["scene-container"]}>
       {curSc && curSc.url ? (
         <div className={Styles["scene-content"]}>
-          <video src={curSc.url} autoPlay></video>
+          <RenderVideo curSc={curSc}></RenderVideo>
           <div ref={dropRef} className={Styles["component-container"]}>
-            {/* <Space direction="vertical">
-          <div>当前block:{JSON.stringify(globalReducer?.curBlock)}</div>
-          <div>当前Scene:{JSON.stringify(globalReducer?.curScene)}</div>
-          <div>
-            当前的blocks:
-            {curBks.map(v => {
-              return <div>{JSON.stringify(v)}</div>
-            })}
-          </div>
-        </Space> */}
             {curBks.map(v => {
               //在编辑器中,绝对定位放在外层处理,组件内层将样式隐式处理掉
               //但是在sdk中要在组件内部处理
@@ -110,7 +149,6 @@ function RenderScene({
                     left: v.styles.left,
                   }}
                   onClick={() => {
-                    console.log("触发---------------------")
                     changeCurBlock(v)
                   }}
                 >

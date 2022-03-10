@@ -93,7 +93,6 @@ function SceneList({
             <Menu
               mode="vertical"
               onClick={e => {
-                console.log(e)
                 handleOperate(e.key)
               }}
             >
@@ -138,11 +137,8 @@ function SceneList({
     if (!val.length) {
       return
     }
-    const tar = orm
-      .session(ormReducer)
-      .Scene.filter(v => v.id == val)
-      .toRefArray()
-    changeCurScene(tar[0])
+    const tar = orm.session(ormReducer).Scene.withId(val)
+    changeCurScene(tar)
     changeCurBlock(null)
   }
   return (

@@ -13,14 +13,13 @@ function BlocksList({globalReducer, ormReducer, addBlock, changeCurBlock}) {
   const [curType, setCurType] = useState("pc-click")
   const didDrop = v => {
     const {Block, Scene} = orm.session(ormReducer)
-    const bks = Block.all().toRefArray()
-    const maxId = Scene.all()
+    const maxId2 = Block.all()
       .toRefArray()
       .map(v => v.id)
       .reduce((pre, cur) => {
         return Math.max(pre, cur)
       }, 0)
-    console.log(maxId)
+    const maxId = ormReducer?.Block?.meta?.maxId || 0
     addBlock({
       ...v,
       curScene: globalReducer.curScene,

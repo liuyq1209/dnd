@@ -67,7 +67,7 @@ const blocksList = [
     type: "pc-click",
     eventType: "click",
     linkType: "inner",
-    name: "手型按钮",
+    name: "圆形按钮",
     key: "btn-hand",
     styles: {
       position: "absolute",
