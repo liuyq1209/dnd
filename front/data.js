@@ -339,6 +339,36 @@ const list = [
           </div>
         ),
       },
+      {
+        title: "script标签中的defer和async的区别",
+        id: "2-10",
+        content: (
+          <div>
+            async script ：解析 HTML
+            过程中进行脚本的异步下载，下载成功立马执行，有可能会阻断 HTML
+            的解析。
+            <br />
+            defer script：完全不会阻碍 HTML
+            的解析，解析完成之后再按照顺序执行脚本。
+          </div>
+        ),
+      },
+      {
+        title: "事件机制",
+        id: "2-10",
+        content: (
+          <div>
+            <div>
+              <p>DOM0级事件:通过onclick添加事件处理程序</p>
+              <p>
+                DOM2级事件:捕获阶段-目标阶段-冒泡阶段,
+                通过addEventListener添加事件处理程序,第三个参数默认为false(冒泡阶段处理)
+              </p>
+              <p>DOM0级的事件可以</p>
+            </div>
+          </div>
+        ),
+      },
     ],
   },
   {
@@ -396,34 +426,110 @@ const list = [
       },
       {
         title: "v17、v18分别做了什么改动",
-        content: "",
         id: "3-5",
+        content: (
+          <div>
+            <div>
+              <h4>v17</h4>
+              <div>
+                1.事件委托的变更,事件由挂载到document上改为挂载到root节点 <br />
+                2.useEffect更新由同步改为异步
+              </div>
+            </div>
+            <div>
+              <h4>v18</h4>
+              <div>
+                在React18中，如果是调用ReactDOM.createRoot(rootElement).render('');渲染根组件的话，将会开启Automatic
+                batching。 <br />
+                <div>
+                  在react18之前,是否命中isBatchingUpdate机制来判断是否是批量更新,这样会导致更新次数不一致,给用户错觉
+                  <br />
+                  在react18之后,如果是通过createRoot创建元素,则会统一一次更新,这就是automatic
+                  batching
+                </div>
+              </div>
+            </div>
+          </div>
+        ),
       },
       {
         title: "常用hooks",
-        content: "",
         id: "3-6",
+        content: (
+          <div>
+            <h4>1.常用的基本hooks</h4>
+            <div>useEffect/useState</div>
+            <h4>2.特殊功能的hooks</h4>
+            <div>useRef/usePrevious/useContext/useReducer</div>
+            <h4>3.优化hooks</h4>
+            <div>useMemo/useCallback</div>
+          </div>
+        ),
       },
       {
         title: "react-fiber原理",
-        content: "",
         id: "3-7",
+        content: (
+          <div>
+            <h4>react16.8之前的版本</h4>
+            <div>
+              协调器/渲染器
+              递归计算,交替进行,但是是同步更新;如果diff时间过久,就会有卡顿的感觉
+            </div>
+            <h4>react16.8之后</h4>
+            <div>
+              增加了一个调度器,调度器可以操作任务的执行顺序,中断/开启任务,设置任务的优先级等等{" "}
+              <br />
+              调度器和协调器交替工作,可以中断/开启等
+              (在内存中进行,不会被用户感知到) <br />
+              最后统一使用渲染器渲染到页面上
+            </div>
+          </div>
+        ),
       },
       {
         title: "react事件绑定原理",
-        content: "",
         id: "3-8",
+        content: (
+          <div>
+            <div>
+              react17之前,事件是绑定在document上的,onclick只是作为一个属性给到元素;
+              <br />
+              1.将事件绑定在document统一管理，防止很多事件直接绑定在原生的dom元素上
+              <br />
+              2.抹平不同浏览器之间的差异
+            </div>
+          </div>
+        ),
       },
       {
         title: "组件异步加载",
-        content: "",
         id: "3-9",
+        content: (
+          <div>
+            lazy(() =`{">"}` import('components/Index')) <br />
+            Suspense
+          </div>
+        ),
       },
       {
         title: "react中的不可变问题",
-        content: "",
         id: "3-10",
+        content: (
+          <div>
+            库:immer <br />
+            Immer 的基本思想是，所有更改都应用于临时的 draftState，它是
+            currentState 的代理。一旦完成所有变更，Immer
+            将基于草稿状态的变更生成
+            nextState。这意味着可以通过简单地修改数据而与数据进行交互，同时保留不可变数据的所有优点。
+          </div>
+        ),
       },
+      // {
+      //   title: "react中是如何监听数据变化的",
+      //   id: "3-10",
+      //   content: "",
+      // },
     ],
   },
   {
@@ -432,43 +538,84 @@ const list = [
     children: [
       {
         title: "mvvm",
-        content: "",
         id: "4-1",
+        content: (
+          <div>双向数据绑定,数据驱动视图;监听数据变化从而直接更新视频</div>
+        ),
       },
       {
         title: "双向绑定原理",
-        content: "",
         id: "4-2",
+        content: (
+          <div>
+            <h4>vue2 Object.defineProperty</h4>
+            <div>监听对象, 监听数据, 深度监听,递归监听</div>
+            <div>
+              深度监听, 需要递归到底, 一次性计算量大 <br />
+              Object.defineProperty无法监听新增/删除属性, 所以需要Vue.set,
+              Vue.delete 做这件事情 <br />
+              通过下边更改数组时, 无法监听数组的变化, 需要特殊处理 <br />
+            </div>
+            <h4>vue3 proxy</h4>
+            <div>
+              深度监听. 性能更好
+              <br />
+              可监听新增/删除 属性
+              <br />
+              可监听数组变化
+              <br />
+            </div>
+          </div>
+        ),
       },
       {
         title: "vue3原理",
-        content: "",
         id: "4-3",
+        content: "",
       },
       {
         title: "vue生命周期",
-        content: "",
         id: "4-4",
+        content: "",
       },
       {
         title: "watch原理",
-        content: "",
         id: "4-5",
+        content: (
+          <div>
+            <h4>watch和computed功能类似,computed同步,watch异步</h4>
+            <div>
+              1.组件created时,实例化一个监听器,将监听的数据收集起来 <br />
+              2.数据发生变化时,调用watcher.prototype.update更新
+              <br />
+            </div>
+          </div>
+        ),
       },
       {
         title: "nextTick原理",
-        content: "",
         id: "4-6",
+        content: (
+          <div>
+            vue是异步渲染, data改变dom不会立刻渲染,
+            如果需要立刻使用的话需要使用$nextTick
+            <div>
+              1.异步渲染, $nextTick待DOM渲染完再回调 <br />
+              2.页面渲染时会将data的修改做整合, 多次data 修改只会渲染一次
+              <br />
+            </div>
+          </div>
+        ),
       },
       {
         title: "通信方式",
-        content: "",
         id: "4-7",
+        content: <div>props/emit/eventBus/vuex</div>,
       },
       {
         title: "slot",
-        content: "",
         id: "4-8",
+        content: "",
       },
     ],
   },
@@ -478,13 +625,43 @@ const list = [
     children: [
       {
         title: "浏览器重排和重绘的区别",
-        content: "",
         id: "5-1",
+        content: "",
       },
       {
         title: "状态码",
-        content: "",
         id: "5-2",
+        content: (
+          <div>
+            200：请求被正常处理 <br />
+            204：请求被受理但没有资源可以返回
+            <br />
+            206：客户端只是请求资源的一部分，服务器只对请求的部分资源执行GET方法，相应报文中通过Content-Range指定范围的资源。
+            <br />
+            301：永久性重定向
+            <br />
+            302：临时重定向
+            <br />
+            303：与302状态码有相似功能，只是它希望客户端在请求一个URI的时候，能通过GET方法重定向到另一个URI上
+            <br />
+            304：发送附带条件的请求时，条件不满足时返回，与重定向无关
+            <br />
+            307：临时重定向，与302类似，只是强制要求使用POST方法
+            <br />
+            400：请求报文语法有误，服务器无法识别
+            <br />
+            401：请求需要认证
+            <br />
+            403：请求的对应资源禁止被访问
+            <br />
+            404：服务器无法找到对应资源
+            <br />
+            500：服务器内部错误
+            <br />
+            503：服务器正忙
+            <br />
+          </div>
+        ),
       },
       {
         title: "进程线程和协程",
@@ -493,28 +670,105 @@ const list = [
       },
       {
         title: "浏览器缓存",
-        content: "",
         id: "5-4",
+        content: (
+          <div>
+            <h4>
+              强缓存:向浏览器缓存查找该请求结果，并根据该结果的缓存规则来决定是否使用该缓存结果的过程
+            </h4>
+            <div>
+              1.不存在该缓存结果和缓存标识(Expires(HTTP/1.0)/Cache-Control(HTTP/1.1优先级更高))，强制缓存失效，则直接向服务器发起请求（跟第一次发起请求一致）
+              <br />
+              2.存在该缓存结果和缓存标识，但该结果已失效，强制缓存失效，则使用协商缓存
+              <br />
+              3.存在该缓存结果和缓存标识，且该结果尚未失效，强制缓存生效，直接返回该结果
+              <br />
+            </div>
+            <h4>
+              协商缓存:强制缓存失效后，浏览器携带缓存标识向服务器发起请求，由服务器根据缓存标识决定是否使用缓存的过程
+            </h4>
+            <div>
+              Last-Modified / If-Modified-Since
+              <br />
+              Etag / If-None-Match(优先级更高) <br />
+            </div>
+          </div>
+        ),
       },
       {
         title: "跨域原理",
-        content: "",
         id: "5-5",
+        content: (
+          <div>
+            1.JSONP
+            <br />
+            2.CORS
+            <div>1.简单请求:判断是否有ACAO字段 2.非简单请求:预检请求</div>
+            3.proxy代理
+          </div>
+        ),
       },
       {
         title: "dom的解析和渲染",
-        content: "",
         id: "5-6",
+        content: (
+          <div>
+            <h4>html解析器</h4>
+            <div>
+              1.字节流转换为token (词法分析)
+              <br />
+              2.token解析为DOM节点
+              <br />
+              3.DOM节点添加到DOM树中
+              <br />
+            </div>
+            <div>
+              <h4>如果有引入外部js</h4>
+              <div>
+                解析到script标签时，渲染引擎判断这是一段脚本， HTML
+                解析器就会暂停 DOM 的解析，JavaScript 引擎介入，并执行 script
+                标签中的这段脚本
+              </div>
+            </div>
+            <div>
+              <h4>如果有引入外部css</h4>
+              <div>
+                如果代码里引用了外部的 CSS 文件，那么在执行 JavaScript
+                之前，还需要等待外部的 CSS 文件下载完成，并解析生成 CSSOM
+                对象之后，才能执行 JavaScript 脚本。
+                <br />而 JavaScript 引擎在解析 JavaScript 之前，是不知道
+                JavaScript 是否操纵了 CSSOM 的，所以渲染引擎在遇到 JavaScript
+                脚本时，不管该脚本是否操纵了 CSSOM，都会执行 CSS
+                文件下载，解析操作，再执行 JavaScript 脚本。
+              </div>
+            </div>
+          </div>
+        ),
       },
       {
         title: "打开url发生了什么",
-        content: "",
         id: "5-7",
+        content: (
+          <div>
+            1.DNS解析
+            <br />
+            2.TCP连接
+            <br />
+            3.HTTP请求
+            <br />
+            4.服务器处理并返回保温
+            <br />
+            5.浏览器渲染页面
+            <br />
+            6.断开连接
+            <br />
+          </div>
+        ),
       },
       {
         title: "v8内存",
-        content: "",
         id: "5-8",
+        content: "",
       },
     ],
   },
@@ -534,18 +788,40 @@ const list = [
       },
       {
         title: "tcp三次握手和四次挥手",
-        content: "",
+        content: (
+          <div>
+            <h4>三次握手</h4>
+            <div>
+              1.客户端发送seq=x <br />
+              2.服务器返回ACK=x+1,seq=y
+              <br />
+              3.客户端确认ACK=y+1,seq=z
+              <br />
+            </div>
+            <h4>四次挥手</h4>
+            <div>
+              1.客户端发送FIN=1,seq=x
+              <br />
+              2.服务端发送ACK=x+1,seq=y
+              <br />
+              3.服务端发送FIN=1,seq=z
+              <br />
+              4.客户端发送ACK=y+1,seq=x
+              <br />
+            </div>
+          </div>
+        ),
         id: "6-3",
       },
       {
         title: "tcp如何保证数据传输的可靠性",
-        content: "",
         id: "6-4",
+        content: "",
       },
       {
         title: "tcp和udp的区别",
-        content: "",
         id: "6-5",
+        content: "",
       },
     ],
   },
