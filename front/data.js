@@ -626,7 +626,27 @@ const list = [
       {
         title: "浏览器重排和重绘的区别",
         id: "5-1",
-        content: "",
+        content: (
+          <div>
+            <h4>浏览器的渲染过程</h4>
+            <div>
+              1.解析HTML，生成DOM树，解析CSS，生成CSSOM树
+              <br />
+              2.将DOM树和CSSOM树结合，生成渲染树(Render Tree)
+              <br />
+              3.Layout(回流):根据生成的渲染树，进行回流(Layout)，得到节点的几何信息（位置，大小）
+              <br />
+              4.Painting(重绘):根据渲染树以及回流得到的几何信息，得到节点的绝对像素
+              <br />
+              5.Display:将像素发送给GPU，展示在页面上。（这一步其实还有很多内容，比如会在GPU将多个合成层合并为同一个层，并展示在页面中。而css3硬件加速的原理则是新建合成层，这里我们不展开，之后有机会会写一篇博客）。
+            </div>
+            <div>
+              注意：回流一定会触发重绘，而重绘不一定会回流
+              <br />
+              根据改变的范围和程度，渲染树中或大或小的部分需要重新计算，有些改变会触发整个页面的重排，比如，滚动条出现的时候或者修改了根节点。
+            </div>
+          </div>
+        ),
       },
       {
         title: "状态码",
@@ -777,14 +797,37 @@ const list = [
     title: "网络",
     children: [
       {
-        title: "https和http的基本优缺点",
-        content: "",
+        title: "https和http",
         id: "6-1",
+        content: (
+          <div>
+            <h4>http1.1 </h4>
+            <div>
+              持久连接/浏览器为每个域名最多同时维护 6 个 TCP 持久连接；/使用 CDN
+              的实现域名分片机制。
+            </div>
+            <h4>http2 - 多路复用</h4>
+            <div>
+              HTTP/2 的思路就是一个域名只使用一个 TCP
+              长连接来传输数据,消除队头阻塞问题
+            </div>
+            <h4>https</h4>
+            <div>
+              对称加密:使用同一个秘钥进行加密 <br />
+              非对称加密:公钥和私钥
+              <br />
+              对称加密+非对称加密结合:在传输数据阶段依然使用对称加密，但是对称加密的密钥我们采用非对称加密来传输
+              <br />
+              客户端用公钥对双方通信的对称秘钥进行加密，并发送给服务器端；
+              服务器利用自己唯一的私钥对客户端发来的对称秘钥进行解密
+            </div>
+          </div>
+        ),
       },
       {
         title: "https原理",
-        content: "",
         id: "6-2",
+        content: "",
       },
       {
         title: "tcp三次握手和四次挥手",
@@ -816,12 +859,29 @@ const list = [
       {
         title: "tcp如何保证数据传输的可靠性",
         id: "6-4",
-        content: "",
+        content: (
+          <div>
+            1.校验序列号 <br />
+            2.确认应答
+            <br />
+            3.超时重传
+            <br />
+            4.流量控制
+            <br />
+            5.拥塞控制
+            <br />
+          </div>
+        ),
       },
       {
         title: "tcp和udp的区别",
         id: "6-5",
-        content: "",
+        content: (
+          <div>
+            1.TCP面向连接;可靠连接;三次握手 <br />
+            2.UDP无连接;非可靠连接;即时性好
+          </div>
+        ),
       },
     ],
   },
@@ -831,28 +891,103 @@ const list = [
     children: [
       {
         title: "webpack常见优化",
-        content: "",
         id: "7-1",
+        content: (
+          <div>
+            <h4>优化打包速度</h4>
+            <div>
+              1.HMR
+              <br />
+              2.使用缓存,cache-loader,将打包编译的产物放进缓存
+            </div>
+            <h4>减小打包体积</h4>
+            <div>
+              1.uglifyjs-webpack-plugin (也支持配置缓存)
+              <br />
+              2.MiniCssExtractPlugin
+              <br />
+              3.tree shaking
+              <br />
+            </div>
+          </div>
+        ),
       },
       {
         title: "webpack打包流程",
-        content: "",
         id: "7-2",
+        content: (
+          <div>
+            1.初始化参数
+            <br />
+            2.初始化Campiler对象,加载所有插件,开始编译
+            <br />
+            3.找到所有的入口文件,开始编译
+            <br />
+            4.调用loader,根据entry找到所有的依赖项,并确定所有的依赖项都经过loader处理
+            <br />
+            5.完成模块编译,获取每个模块之间的依赖关系
+            <br />
+            6.组装成一个个包含多个模块的chunk,并添加到输出列表
+            <br />
+            7.根据配置,确定输出的路径和文件名
+            <br />
+          </div>
+        ),
       },
       {
         title: "loader和plugin的区别",
-        content: "",
         id: "7-3",
+        content: (
+          <div>
+            loader即为文件转换器，操作的是文件，将文件A通过loader转换成文件B，是一个单纯的文件转化过程。
+            <br />
+            plugin即为插件，是一个扩展器，丰富webpack本身，增强功能
+            ，针对的是在loader结束之后，webpack打包的整个过程，他并不直接操作文件，而是基于事件机制工作，监听webpack打包过程中的某些节点，执行广泛的任务。
+            <br />
+          </div>
+        ),
       },
       {
         title: "热更新原理",
-        content: "",
         id: "7-4",
+        content: (
+          <div>
+            1.使用 webpack-dev-server (后面简称 WDS)托管静态资源，同时以 Runtime
+            方式注入 HMR 客户端代码
+            <br />
+            2.浏览器加载页面后，与 WDS 建立 WebSocket 连接
+            <br />
+            3.Webpack 监听到文件变化后，增量构建发生变更的模块，并通过 WebSocket
+            发送 hash 事件
+            <br />
+            4.浏览器加载发生变更的增量模块
+            <br />
+            5.Webpack 运行时触发变更模块的 module.hot.accept
+            回调，执行代码变更逻辑
+            <br />
+          </div>
+        ),
       },
       {
         title: "tree-shaking",
-        content: "",
         id: "7-5",
+        content: (
+          <div>
+            tree shaking 是一个术语，通常用于描述移除 JavaScript
+            上下文中的未引用代码(dead-code)。它依赖于 ES2015
+            模块系统中的静态结构特性，例如 import 和 export
+            <br />
+            1.收集模块导出，模块有哪些值被导出
+            <br />
+            2.标记模块导出，标记哪些被用到哪些没有被用到
+            <br />
+            3.生成代码
+            <br />
+            4.删除 Dead
+            Code，经过前面几步操作之后，模块导出列表中未被使用的值都不会定义在
+            __webpack_exports__ 对象中，形成一段不可能被执行的 Dead Code 效果
+          </div>
+        ),
       },
     ],
   },
@@ -862,18 +997,53 @@ const list = [
     children: [
       {
         title: "babel和webpack的区别",
-        content: "",
         id: "8-1",
+        content: (
+          <div>
+            Babel
+            是编译工具，把高版本语法编译成低版本语法，或者将文件按照自定义规则转换成js语法。
+            <br />
+            webpack 是打包工具，定义入口文件，将所有模块引入整理后，通过 loader
+            和 plugin 处理后，打包输出。
+            <br />
+            webpack 通过 babel-loader 使用 Babel 。
+          </div>
+        ),
       },
       {
         title: "babel的工作原理",
-        content: "",
         id: "8-2",
+        content: (
+          <div>
+            babel在将高版本的语法编译成低版本语法时, 是先将代码转换成AST,
+            再对AST进行处理, 最后再转换为代码.
+            <br />
+            1.词法分析: 将代码解析为token
+            <br />
+            2.语法分析: 将token解析为抽象语法树(AST)
+            <br />
+            3.变换（transforming）: 对AST进行变换处理
+            <br />
+            4.生成目标代码（generating）: 通过递归处理AST ，打印出目标代码
+            <br />
+          </div>
+        ),
       },
       {
-        title: "AST语法树",
-        content: "",
+        title: "AST",
         id: "8-3",
+        content: (
+          <div>
+            babel-parser负责将输入代码转换为AST
+            <br />
+            babel-traverse负责提供深度遍历 ast 节点的能力（traverse
+            本身并不负责转换 ast，只是提供遍历 ast
+            节点的能力，具体的转换逻辑交给各种 babel
+            插件来实现，这也在很大程度上提高了 babel
+            的扩展性，日后如果新增了语言特性不用修改或很少修改核心代码，只需要编写相应的插件来转换新的语法就行了
+            <br />
+          </div>
+        ),
       },
     ],
   },
