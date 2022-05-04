@@ -190,6 +190,12 @@ const list = [
                 prototype 属性
               </h4>
             </div>
+            <div>
+              <h4>基本数据类型存放在栈内存中, 复杂数据类型存在堆内存中</h4>
+              <div>
+                注意⚠️：闭包中的基本数据类型变量是保存在堆内存里的，当函数执行完弹出调用栈后，返回一个内部函数的一个引用，这时候函数的变量就会转移到堆上，因此内部函数依然能访问到上一层函数的变量。
+              </div>
+            </div>
           </div>
         ),
         id: "2-1",
@@ -212,6 +218,23 @@ const list = [
             </p>
           </div>
         ),
+      },
+      {
+        title: "判断数组",
+        id: "2-2-1",
+        content: (
+          <div>
+            1.Array.isArray([]) <br />
+            2.Object.prototype.toString.call([]), //'[object Array]'
+            <br />
+            3.[].constructor === Array
+          </div>
+        ),
+      },
+      {
+        title: "判断对象",
+        id: "2-2-2",
+        content: <div>1.</div>,
       },
       {
         title: "var let const",
@@ -355,7 +378,7 @@ const list = [
       },
       {
         title: "事件机制",
-        id: "2-10",
+        id: "2-10-1",
         content: (
           <div>
             <div>
@@ -365,6 +388,95 @@ const list = [
                 通过addEventListener添加事件处理程序,第三个参数默认为false(冒泡阶段处理)
               </p>
               <p>DOM0级的事件可以</p>
+            </div>
+          </div>
+        ),
+      },
+      {
+        title: "this",
+        id: "2-11",
+        content: (
+          <div>
+            <h4>按照如下优先级判断</h4>
+            1.如果函数是作为构造函数,使用new方法生成的对象,
+            那么这个构造函数中的this被绑定到了实例对象上
+            <br />
+            2.如果函数调用时被apply,call, bind方法强绑定了this,
+            this就指向强绑定的对象(apply等函数的第一个参数)
+            <br />
+            3.普通函数的this指向该函数的调用对象
+            <br />
+            4.箭头函数没有自己的this, 只能从作用域链的上一层获取this;
+            所以箭头函数的this是可变的
+            <br />
+          </div>
+        ),
+      },
+      {
+        title: "new原理",
+        id: "2-11-1",
+        content: (
+          <div>
+            1. 创建一个新对象;
+            <br />
+            2.将新对象的__proto__属性链接到构造函数的prototype上
+            <br />
+            3.让构造函数中的this值指向新对象,并执行构造函数的函数体
+            <br />
+            4.返回对象
+            <br />
+          </div>
+        ),
+      },
+      {
+        title: "箭头函数和普通函数的区别",
+        id: "2-12",
+        content: (
+          <div>
+            箭头函数this的来自上一层作用域的this, 和调用位置无关
+            <br />
+            箭头函数不能使用apply,call进行强绑定this
+            <br />
+            箭头函数不能作为构造函数使用
+            <br />
+            箭头函数没有自己的arguments，可以在箭头函数中使用rest参数代替arguments对象，来访问箭头函数的参数列表
+            <br />
+            箭头函数没有原型prototype
+            <br />
+          </div>
+        ),
+      },
+      {
+        title: "Map和Set的区别，Map和Object的区别",
+        id: "2-13",
+        content: (
+          <div>
+            <h4>Map 和 Objects 的区别</h4>
+            <div>
+              ①：Object的键只能是字符串或者Symbols，Map的键可以是任何类型。
+              <br />
+              ②：Map中的键值遵循FIFO原则，即有序的。而Object添加的键则不是。
+              <br />
+              ③：Map中的键值对可以通过size来计算，Object需要我们手动计算。
+              <br />
+              ④：Object
+              都有自己的原型，原型链上的键名有可能和你自己在对象上的设置的键名产生冲突。
+              <br />
+            </div>
+            <h4>Set和Map</h4>
+            <div>
+              Set是集合,Map是字典
+              <br />
+              Set存储不重复元素,有has,add,delete,clear方法
+              <br />
+              Map有get,set,has,delete,clear方法
+            </div>
+            <h4>WeakSet和Set</h4>
+            <div>
+              WeakSet 只能储存对象引用，不能存放值，而 Set 对象都可以。
+              <br />
+              WeakSet 对象中储存的对象值都是被弱引用的，即垃圾回收机制不考虑
+              WeakSet对该对象的应用，如果没有其他的变量或属性引用这个对象值，则这个对象将会被垃圾回收掉
             </div>
           </div>
         ),
@@ -522,6 +634,21 @@ const list = [
             currentState 的代理。一旦完成所有变更，Immer
             将基于草稿状态的变更生成
             nextState。这意味着可以通过简单地修改数据而与数据进行交互，同时保留不可变数据的所有优点。
+          </div>
+        ),
+      },
+      {
+        title: "context的原理",
+        id: "3-11",
+        content: (
+          <div>
+            <div>以栈的形式保存所有共享数据</div>
+            1.在消费状态时,ContextConsumer节点调用readContext(MyContext)获取最新状态.
+            <br />
+            2.在更新状态时,
+            由ContextProvider节点负责查找所有ContextConsumer节点,
+            并设置消费节点的父路径上所有节点的fiber.childLanes,
+            保证消费节点可以得到更新.
           </div>
         ),
       },
@@ -689,7 +816,7 @@ const list = [
         id: "5-3",
       },
       {
-        title: "浏览器缓存",
+        title: "http缓存",
         id: "5-4",
         content: (
           <div>
@@ -709,8 +836,18 @@ const list = [
             </h4>
             <div>
               Last-Modified / If-Modified-Since
+              <div>
+                Last-Modified是服务器响应请求时，返回该资源文件在服务器最后被修改的时间
+                <br />
+                If-Modified-Since则是客户端再次发起该请求时，携带上次请求返回的Last-Modified值，通过此字段值告诉服务器该资源上次请求返回的最后被修改时间{" "}
+                <br />
+                服务器收到该请求，发现请求头含有If-Modified-Since字段，则会根据If-Modified-Since的字段值与该资源在服务器的最后被修改时间做对比，若服务器的资源最后被修改时间大于If-Modified-Since的字段值，则重新返回资源，状态码为200；否则则返回304，代表资源无更新，可继续使用缓存文件
+              </div>
               <br />
               Etag / If-None-Match(优先级更高) <br />
+              <div>
+                Etag是服务器响应请求时，返回当前资源文件的一个唯一标识(由服务器生成)
+              </div>
             </div>
           </div>
         ),
@@ -723,10 +860,24 @@ const list = [
             1.JSONP
             <br />
             2.CORS
-            <div>1.简单请求:判断是否有ACAO字段 2.非简单请求:预检请求</div>
+            <div>
+              1.简单请求:判断是否有ACAO(Access-Control-Allow-Origin)字段
+              2.非简单请求:预检请求
+            </div>
             3.proxy代理
+            <div>
+              跨域时,不能获取cookie
+              <br />
+              resp.setHeader("Access-Control-Allow-Credentials", "true"); //
+              允许客户端携带跨域cookie，此时origin值不能为“*”，只能为指定单一域名
+            </div>
           </div>
         ),
+      },
+      {
+        title: "XSS攻击",
+        id: "5-5-1",
+        content: <div></div>,
       },
       {
         title: "dom的解析和渲染",
@@ -790,6 +941,20 @@ const list = [
         id: "5-8",
         content: "",
       },
+      {
+        title: "xss攻击和csrf攻击",
+        id: "5-9",
+        content: (
+          <div>
+            XSS：恶意攻击者往 Web 页面里插入恶意 Script
+            代码，当用户浏览该页之时，嵌入其中 Web 里面的 Script
+            代码会被执行，从而达到恶意攻击用户的目的。
+            <br />
+            CSRF：CSRF 攻击是攻击者借助受害者的 Cookie
+            骗取服务器的信任，可以在受害者毫不知情的情况下以受害者名义伪造请求发送给受攻击服务器，从而在并未授权的情况下执行在权限保护之下的操作。
+          </div>
+        ),
+      },
     ],
   },
   {
@@ -805,13 +970,18 @@ const list = [
             <div>
               持久连接/浏览器为每个域名最多同时维护 6 个 TCP 持久连接；/使用 CDN
               的实现域名分片机制。
+              <br />
+              HTTP持久连接（也称作HTTP
+              keep-alive）是使用同一个TCP连接来发送和接收多个HTTP请求/应答，而不是为每一个新的请求/应答打开新的连接的方法。
             </div>
             <h4>http2 - 多路复用</h4>
             <div>
-              HTTP/2 的思路就是一个域名只使用一个 TCP
-              长连接来传输数据,消除队头阻塞问题
+              所谓请求阻塞意思就是一条TCP的connection在同一时间只能允许一个请求经过，这样假如后续请求想要复用这个链接就必须等到前一个完成才行
+              <br />
+              HTTP/2 请求可以同时发送,消除队头阻塞问题
             </div>
             <h4>https</h4>
+
             <div>
               对称加密:使用同一个秘钥进行加密 <br />
               非对称加密:公钥和私钥

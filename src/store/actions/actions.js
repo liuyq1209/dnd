@@ -9,6 +9,10 @@ import {
   CHANGE_CUR_SCENE,
   CHANGE_CUR_BLOCK,
   CHANGE_PAGE_SETTING,
+  ADD_OPERATE,
+  ADD_UNDO_OPERATE,
+  ADD_CUR_STEP,
+  SUBSTRACT_CUR_STEP,
 } from "./actionTypes"
 
 export const addBlock = props => {
@@ -70,6 +74,30 @@ export const changeCurBlock = props => {
 export const changePageSetting = props => {
   return {
     type: CHANGE_PAGE_SETTING,
+    payload: props,
+  }
+}
+export const addOperate = props => {
+  return {
+    type: ADD_OPERATE,
+    payload: props,
+  }
+}
+export const addUndoOperate = props => {
+  return {
+    type: ADD_UNDO_OPERATE,
+    payload: props,
+  }
+}
+export const addCurStep = props => {
+  return {
+    type: ADD_CUR_STEP,
+    payload: props,
+  }
+}
+export const substractCurStep = props => {
+  return {
+    type: SUBSTRACT_CUR_STEP,
     payload: props,
   }
 }

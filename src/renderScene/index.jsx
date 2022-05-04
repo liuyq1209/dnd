@@ -14,6 +14,9 @@ import {
   changeCurBlock,
   deleteBlock,
   changeSceneAttr,
+  addOperate,
+  addUndoOperate,
+  addCurStep,
 } from "../store/actions/actions"
 import {blocksList} from "../material/BlockList/block.config"
 import cx from "classnames"
@@ -89,11 +92,22 @@ function RenderScene({
   deleteBlock,
   changeBlockStyles,
   changeSceneAttr,
+  addOperate,
+  addUndoOperate,
+  addCurStep,
 }) {
+  const undoMap = {
+    changeBlockStyles: params => {
+      changeBlockStyles(params)
+      changeCurBlock(params.bk)
+    },
+  }
+
   const {Scene, Block} = orm.session(ormReducer)
   const curSc = Scene.withId(globalReducer?.curScene?.id)
   const bks = Block.all().toRefArray()
   const curBks = bks.filter(v => v.curScene.id === globalReducer.curScene.id)
+
   const [, dropRef] = useDrop({
     // accept 是一个标识，需要和对应的 drag 元素中 type 值一致，否则不能感应
     accept: ["blocks", "translate"],
@@ -117,10 +131,42 @@ function RenderScene({
             left: initLeft + pos.x + "px",
           },
         })
+        console.log(item, bk)
         changeCurBlock(item)
+
+        handleOperate(bk, pos)
       }
     },
   })
+  const handleOperate = (bk, pos) => {
+    const initTop = bk.styles.top ? parseInt(bk.styles.top) : 0
+    const initLeft = bk.styles.left ? parseInt(bk.styles.left) : 0
+    addCurStep()
+    addOperate({
+      func: () => {
+        changeBlockStyles({
+          id: bk.id,
+          styles: {
+            top: initTop + pos.y + 26 + "px",
+            left: initLeft + pos.x + "px",
+          },
+        })
+        changeCurBlock(bk)
+      },
+    })
+    addUndoOperate({
+      func: () => {
+        undoMap["changeBlockStyles"]({
+          id: bk.id,
+          bk,
+          styles: {
+            top: initTop + "px",
+            left: initLeft + "px",
+          },
+        })
+      },
+    })
+  }
   return (
     <div className={Styles["scene-container"]}>
       {curSc && curSc.url ? (
@@ -158,6 +204,7 @@ function RenderScene({
                       e.stopPropagation()
                       deleteBlock({
                         id: v.id,
+                        sceneId: curSc.id,
                       })
                       changeCurBlock(null)
                     }}
@@ -195,5 +242,13 @@ function RenderScene({
 }
 export default ReduxWrapToProps({
   Component: RenderScene,
-  actions: {changeCurBlock, deleteBlock, changeBlockStyles, changeSceneAttr},
+  actions: {
+    changeCurBlock,
+    deleteBlock,
+    changeBlockStyles,
+    changeSceneAttr,
+    addOperate,
+    addUndoOperate,
+    addCurStep,
+  },
 })

@@ -11,7 +11,18 @@ import appReducer from "./reducer/reducer"
 //     })
 //   },
 // })
-const store = createStore(appReducer)
+let store
+try {
+  store = createStore(
+    appReducer,
+    window &&
+      window.__REDUX_DEVTOOLS_EXTENSION__ &&
+      window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
+} catch (error) {
+  store = createStore(appReducer)
+}
+
 // store.subscribe(
 //   throttle(() => {
 //     saveState({
