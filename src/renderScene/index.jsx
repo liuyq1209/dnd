@@ -17,6 +17,7 @@ import {
   addOperate,
   addUndoOperate,
   addCurStep,
+  addBlock,
 } from "../store/actions/actions"
 import {blocksList} from "../material/BlockList/block.config"
 import cx from "classnames"
@@ -95,11 +96,16 @@ function RenderScene({
   addOperate,
   addUndoOperate,
   addCurStep,
+  addBlock,
 }) {
   const undoMap = {
     changeBlockStyles: params => {
       changeBlockStyles(params)
       changeCurBlock(params.bk)
+    },
+    addBlock: params => {
+      deleteBlock(params)
+      changeCurBlock(null)
     },
   }
 
@@ -108,13 +114,43 @@ function RenderScene({
   const bks = Block.all().toRefArray()
   const curBks = bks.filter(v => v.curScene.id === globalReducer.curScene.id)
 
-  const [, dropRef] = useDrop({
+  const [collected, dropRef] = useDrop({
     // accept 是一个标识，需要和对应的 drag 元素中 type 值一致，否则不能感应
     accept: ["blocks", "translate"],
+    collect: minoter => ({
+      isOver: minoter.isOver(),
+      getInitialSourceClientOffset: minoter.getInitialSourceClientOffset(),
+      item: minoter.getItem(),
+    }),
     drop: (item, monitor) => {
-      // console.log(item)
+      const pos = monitor.getDifferenceFromInitialOffset()
+      // console.log("投影:", monitor.getSourceClientOffset())
+      // console.log("指针最后记录的偏移:", monitor.getClientOffset())
+      // console.log(
+      //   "拖拽源组件根dom节点的偏移:",
+      //   monitor.getInitialSourceClientOffset()
+      // )
+      // console.log("指针的偏移:", monitor.getInitialClientOffset())
+      console.log(
+        "上次记录的指针客户端偏移量与当前拖动操作开始时的客户端偏移量之间的差值:",
+        pos
+      )
+      const {x: x3, y: y3} = pos
+      const {left: x1, top: y1} = document
+        .getElementById("component-container")
+        .getBoundingClientRect()
+      const {left: x2, top: y2} = document
+        .getElementById(item.key)
+        .getBoundingClientRect()
+
+      console.log("画布位置:", x1, y1)
+      console.log("组件初始位置:", x2, y2)
+      console.log("组件前后位置差:", x3, y3)
+      console.log("x:", x2 + x3 - x1, "--y:", y2 + y3 - y1)
+      const targetX = x2 + x3 - x1
+      const targetY = y2 + y3 - y1
+
       if (monitor.getItemType() === "translate") {
-        const pos = monitor.getDifferenceFromInitialOffset()
         const bk = Block.withId(item.id)
         // console.log(monitor.getSourceClientOffset())
         // console.log(monitor.getClientOffset())
@@ -127,18 +163,69 @@ function RenderScene({
           //删除按钮导致拖拽错位, 手动+26
           //todo: 还有一定误差,后续有时间继续优化
           styles: {
-            top: initTop + pos.y + 26 + "px",
+            // top: initTop + pos.y + 26 + "px",
+            // left: initLeft + pos.x + "px",
+            top: initTop + pos.y + "px",
             left: initLeft + pos.x + "px",
           },
         })
         console.log(item, bk)
         changeCurBlock(item)
 
-        handleOperate(bk, pos)
+        changeStyleEffect(bk, pos)
+      }
+      if (monitor.getItemType() === "blocks") {
+        const maxId = ormReducer?.Block?.meta?.maxId
+        const newId = maxId == undefined ? 0 : maxId + 1
+        addBlock({
+          ...item,
+          curScene: globalReducer.curScene,
+        })
+        changeBlockStyles({
+          id: newId,
+          //删除按钮导致拖拽错位, 手动+26
+          //todo: 还有一定误差,后续有时间继续优化
+          styles: {
+            top: (targetY >= 0 ? targetY : 0) + "px",
+            left: (targetX >= 0 ? targetX : 0) + "px",
+          },
+        })
+
+        changeCurBlock({
+          ...item,
+          // id: Block.all().toRefArray().length == 0 ? 0 : maxId + 1, //新组件的id是maxId+1,redux-orm的规则
+          id: newId,
+          curScene: globalReducer.curScene,
+        })
+        changeAddEffect(newId)
       }
     },
   })
-  const handleOperate = (bk, pos) => {
+  // console.log(collected, collected.getInitialSourceClientOffset, collected.item)
+  const changeAddEffect = newId => {
+    addCurStep()
+    addOperate({
+      func: () => {
+        addBlock({
+          ...v,
+          id: newId,
+          curScene: globalReducer.curScene,
+        })
+      },
+    })
+    addUndoOperate({
+      func: getUndoFun(newId),
+    })
+  }
+  const getUndoFun = id => {
+    return () => {
+      undoMap["addBlock"]({
+        id: id,
+        sceneId: globalReducer.curScene.id,
+      })
+    }
+  }
+  const changeStyleEffect = (bk, pos) => {
     const initTop = bk.styles.top ? parseInt(bk.styles.top) : 0
     const initLeft = bk.styles.left ? parseInt(bk.styles.left) : 0
     addCurStep()
@@ -172,7 +259,11 @@ function RenderScene({
       {curSc && curSc.url ? (
         <div className={Styles["scene-content"]}>
           <RenderVideo curSc={curSc}></RenderVideo>
-          <div ref={dropRef} className={Styles["component-container"]}>
+          <div
+            ref={dropRef}
+            className={Styles["component-container"]}
+            id={"component-container"}
+          >
             {curBks.map(v => {
               //在编辑器中,绝对定位放在外层处理,组件内层将样式隐式处理掉
               //但是在sdk中要在组件内部处理
@@ -183,7 +274,17 @@ function RenderScene({
               }
               const c = blocksList.find(b => b.key === v.key)
               const com = (
+                <div>
+                  {React.createElement(c.content, {
+                    ...v.props,
+                    ...v.styles,
+                    ...resetStyle,
+                  })}
+                </div>
+              )
+              return (
                 <div
+                  key={v.id}
                   className={cx({
                     [Styles["com-wrap"]]: true,
                     [Styles["com-wrap-active"]]:
@@ -211,14 +312,9 @@ function RenderScene({
                   >
                     <DeleteOutlined />
                   </div>
-                  {React.createElement(c.content, {
-                    ...v.props,
-                    ...v.styles,
-                    ...resetStyle,
-                  })}
+                  <DragBlocks com={com} val={v} type="translate" />
                 </div>
               )
-              return <DragBlocks com={com} val={v} type="translate" />
             })}
           </div>
         </div>
@@ -250,5 +346,6 @@ export default ReduxWrapToProps({
     addOperate,
     addUndoOperate,
     addCurStep,
+    addBlock,
   },
 })

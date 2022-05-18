@@ -27,47 +27,43 @@ function BlocksList({
   deleteBlock,
   addCurStep,
 }) {
-  console.log("operate:", operateReducer)
+  // console.log("operate:", operateReducer)
   const [curType, setCurType] = useState("pc-click")
   // const [newCom, setNewCom] = useState({})
-  const undoMap = {
-    addBlock: params => {
-      deleteBlock(params)
-      changeCurBlock(null)
-    },
-  }
+  // const undoMap = {
+  //   addBlock: params => {
+  //     deleteBlock(params)
+  //     changeCurBlock(null)
+  //   },
+  // }
 
   const didDrop = v => {
-    const {Block, Scene} = orm.session(ormReducer)
-    const maxId = ormReducer?.Block?.meta?.maxId
-    console.log("当前最大的id:", maxId)
-    console.log(ormReducer, maxId, newId)
-    const newId = maxId == undefined ? 0 : maxId + 1
-    addBlock({
-      ...v,
-      curScene: globalReducer.curScene,
-    })
-    addCurStep()
-    // //要拿到最新的newCom
-    addOperate({
-      func: () => {
-        addBlock({
-          ...v,
-          id: newId,
-          curScene: globalReducer.curScene,
-        })
-      },
-    })
-    addUndoOperate({
-      func: getUndoFun(newId),
-    })
-
-    changeCurBlock({
-      ...v,
-      // id: Block.all().toRefArray().length == 0 ? 0 : maxId + 1, //新组件的id是maxId+1,redux-orm的规则
-      id: newId,
-      curScene: globalReducer.curScene,
-    })
+    // const maxId = ormReducer?.Block?.meta?.maxId
+    // const newId = maxId == undefined ? 0 : maxId + 1
+    // addBlock({
+    //   ...v,
+    //   curScene: globalReducer.curScene,
+    // })
+    // addCurStep()
+    // // //要拿到最新的newCom
+    // addOperate({
+    //   func: () => {
+    //     addBlock({
+    //       ...v,
+    //       id: newId,
+    //       curScene: globalReducer.curScene,
+    //     })
+    //   },
+    // })
+    // addUndoOperate({
+    //   func: getUndoFun(newId),
+    // })
+    // changeCurBlock({
+    //   ...v,
+    //   // id: Block.all().toRefArray().length == 0 ? 0 : maxId + 1, //新组件的id是maxId+1,redux-orm的规则
+    //   id: newId,
+    //   curScene: globalReducer.curScene,
+    // })
   }
   //需要存一个curStep
   const getUndoFun = id => {
@@ -119,13 +115,15 @@ function BlocksList({
           .filter(v => v.type === curType)
           .map(v => {
             const com = (
-              <div key={v.id} className={Styles["com-wrap"]}>
+              <div id={v.key} style={{height: "100%"}}>
                 {React.createElement(v.content)}
-                <div className={Styles["com-name"]}>{v.name}</div>
               </div>
             )
             return (
-              <DragBlocks com={com} val={v} didDrop={didDrop} type="blocks" />
+              <div key={v.id} className={Styles["com-wrap"]}>
+                <DragBlocks com={com} val={v} didDrop={didDrop} type="blocks" />
+                <div className={Styles["com-name"]}>{v.name}</div>
+              </div>
             )
           })}
       </Space>
