@@ -28,6 +28,51 @@ function jinsi(val1, val2, wucha = 1) {
   return false
 }
 
+function calculate(
+  targetLeft,
+  targetTop,
+  targetW,
+  targetH,
+  left,
+  top,
+  width,
+  height
+) {
+  if (
+    jinsi(parseInt(targetLeft), parseInt(left)) ||
+    jinsi(parseInt(targetLeft) + parseInt(targetW), parseInt(left))
+  ) {
+    return {left: parseInt(left), top: 0}
+  }
+
+  if (
+    jinsi(parseInt(targetLeft), parseInt(left) + parseInt(width)) ||
+    jinsi(
+      parseInt(targetLeft) + parseInt(targetW),
+      parseInt(left) + parseInt(width)
+    )
+  ) {
+    return {left: parseInt(left) + parseInt(width), top: 0}
+  }
+
+  if (
+    jinsi(parseInt(targetTop), parseInt(top)) ||
+    jinsi(parseInt(targetTop) + parseInt(targetH), parseInt(top))
+  ) {
+    return {left: 0, top: parseInt(top)}
+  }
+  if (
+    jinsi(parseInt(targetTop), parseInt(top) + parseInt(height)) ||
+    jinsi(
+      parseInt(targetTop) + parseInt(targetH),
+      parseInt(top) + parseInt(height)
+    )
+  ) {
+    return {left: 0, top: parseInt(top) + parseInt(height)}
+  }
+  return false
+}
+
 const createGuidelines = ({
   left: targetLeft,
   top: targetTop,
@@ -37,53 +82,30 @@ const createGuidelines = ({
   curBk,
   dom,
 }) => {
-  // console.log(x, y)
+  for (let i in curBks) {
+    // console.log(curBks[i])
+    if (curBk && curBks[i].id == curBk.id) continue
+    const {left, top, width, height} = curBks[i].styles
 
-  curBks.forEach(b => {
-    if (curBk && b.id == curBk.id) return
-    const {left, top, width, height} = b.styles
+    const result = calculate(
+      targetLeft,
+      targetTop,
+      targetW,
+      targetH,
+      left,
+      top,
+      width,
+      height
+    )
+    // console.log(result)
     // console.log("targetLeft:", targetLeft)
     // console.log("left:", left)
-    // console.log("width:", width)
-    if (
-      jinsi(parseInt(targetLeft), parseInt(left)) ||
-      jinsi(parseInt(targetLeft) + parseInt(targetW), parseInt(left))
-    ) {
-      drawLine({left: parseInt(left), top: 0, dom})
-      return
+    if (result) {
+      drawLine({...result, dom})
+      break
     }
-
-    if (
-      jinsi(parseInt(targetLeft), parseInt(left) + parseInt(width)) ||
-      jinsi(
-        parseInt(targetLeft) + parseInt(targetW),
-        parseInt(left) + parseInt(width)
-      )
-    ) {
-      drawLine({left: parseInt(left) + parseInt(width), top: 0, dom})
-      return
-    }
-
-    if (
-      jinsi(parseInt(targetTop), parseInt(top)) ||
-      jinsi(parseInt(targetTop) + parseInt(targetH), parseInt(top))
-    ) {
-      drawLine({left: 0, top: parseInt(top), dom})
-      return
-    }
-    if (
-      jinsi(parseInt(targetTop), parseInt(top) + parseInt(height)) ||
-      jinsi(
-        parseInt(targetTop) + parseInt(targetH),
-        parseInt(top) + parseInt(height)
-      )
-    ) {
-      drawLine({left: 0, top: parseInt(top) + parseInt(height), dom})
-      return
-    }
-
-    return removeLine(dom)
-  })
+    removeLine(dom)
+  }
 }
 
 export {createGuidelines, removeLine}
