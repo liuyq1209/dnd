@@ -24,6 +24,7 @@ import cx from "classnames"
 import Styles from "./index.module.scss"
 import DragBlocks from "../components/DragBlocks/DragBlocks"
 import UploadVideo from "../components/UploadVideo/UploadVideo"
+import {createGuidelines, removeLine} from "./guideLine"
 
 function RenderNoVideo({onChange}) {
   return (
@@ -113,16 +114,32 @@ function RenderScene({
   const curSc = Scene.withId(globalReducer?.curScene?.id)
   const bks = Block.all().toRefArray()
   const curBks = bks.filter(v => v.curScene.id === globalReducer.curScene.id)
-
+  const line = useRef()
   const [collected, dropRef] = useDrop({
     // accept 是一个标识，需要和对应的 drag 元素中 type 值一致，否则不能感应
     accept: ["blocks", "translate"],
-    collect: minoter => ({
-      isOver: minoter.isOver(),
-      getInitialSourceClientOffset: minoter.getInitialSourceClientOffset(),
-      item: minoter.getItem(),
+    hover: (item, monitor) => {
+      // console.log("hover is called")
+      //拖拽过程中的位置
+      // console.log(monitor.getDifferenceFromInitialOffset())
+      const curPos = monitor.getDifferenceFromInitialOffset()
+      createGuidelines({
+        left: curPos.x + parseInt(item.styles.left),
+        top: curPos.y + parseInt(item.styles.top),
+        width: parseInt(item.styles.width),
+        height: parseInt(item.styles.height),
+        curBk: Block.withId(item.id),
+        curBks,
+        dom: line.current,
+      })
+    },
+    collect: monitor => ({
+      isOver: monitor.isOver(),
+      getInitialSourceClientOffset: monitor.getInitialSourceClientOffset(),
+      item: monitor.getItem(),
     }),
     drop: (item, monitor) => {
+      removeLine(line.current)
       const pos = monitor.getDifferenceFromInitialOffset()
       // console.log("投影:", monitor.getSourceClientOffset())
       // console.log("指针最后记录的偏移:", monitor.getClientOffset())
@@ -131,31 +148,13 @@ function RenderScene({
       //   monitor.getInitialSourceClientOffset()
       // )
       // console.log("指针的偏移:", monitor.getInitialClientOffset())
-      console.log(
-        "上次记录的指针客户端偏移量与当前拖动操作开始时的客户端偏移量之间的差值:",
-        pos
-      )
-      const {x: x3, y: y3} = pos
-      const {left: x1, top: y1} = document
-        .getElementById("component-container")
-        .getBoundingClientRect()
-      const {left: x2, top: y2} = document
-        .getElementById(item.key)
-        .getBoundingClientRect()
-
-      console.log("画布位置:", x1, y1)
-      console.log("组件初始位置:", x2, y2)
-      console.log("组件前后位置差:", x3, y3)
-      console.log("x:", x2 + x3 - x1, "--y:", y2 + y3 - y1)
-      const targetX = x2 + x3 - x1
-      const targetY = y2 + y3 - y1
+      // console.log(
+      //   "上次记录的指针客户端偏移量与当前拖动操作开始时的客户端偏移量之间的差值:",
+      //   pos
+      // )
 
       if (monitor.getItemType() === "translate") {
         const bk = Block.withId(item.id)
-        // console.log(monitor.getSourceClientOffset())
-        // console.log(monitor.getClientOffset())
-        // console.log(monitor.getInitialSourceClientOffset())
-        // console.log(monitor.getInitialClientOffset())
         const initTop = bk.styles.top ? parseInt(bk.styles.top) : 0
         const initLeft = bk.styles.left ? parseInt(bk.styles.left) : 0
         changeBlockStyles({
@@ -169,12 +168,26 @@ function RenderScene({
             left: initLeft + pos.x + "px",
           },
         })
-        console.log(item, bk)
+        // console.log(item, bk)
         changeCurBlock(item)
 
         changeStyleEffect(bk, pos)
       }
       if (monitor.getItemType() === "blocks") {
+        const {x: x3, y: y3} = pos
+        const {left: x1, top: y1} = document
+          .getElementById("component-container")
+          .getBoundingClientRect()
+        const {left: x2, top: y2} = document
+          .getElementById(item.key)
+          .getBoundingClientRect()
+
+        // console.log("画布位置:", x1, y1)
+        // console.log("组件初始位置:", x2, y2)
+        // console.log("组件前后位置差:", x3, y3)
+        // console.log("x:", x2 + x3 - x1, "--y:", y2 + y3 - y1)
+        const targetX = x2 + x3 - x1
+        const targetY = y2 + y3 - y1
         const maxId = ormReducer?.Block?.meta?.maxId
         const newId = maxId == undefined ? 0 : maxId + 1
         addBlock({
@@ -202,6 +215,8 @@ function RenderScene({
     },
   })
   // console.log(collected, collected.getInitialSourceClientOffset, collected.item)
+  // console.log(collected.isOver)
+
   const changeAddEffect = newId => {
     addCurStep()
     addOperate({
@@ -316,6 +331,7 @@ function RenderScene({
                 </div>
               )
             })}
+            <div ref={line} style={{position: "absolute"}}></div>
           </div>
         </div>
       ) : curSc ? (
