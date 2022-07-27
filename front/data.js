@@ -234,7 +234,25 @@ const list = [
       {
         title: "判断对象",
         id: "2-2-2",
-        content: <div>1.</div>,
+        content: (
+          <div>
+            <div>
+              <p>1.toString()</p>
+              Object.prototype.toString.call(obj) === '[Object Object]'
+            </div>
+            <div>
+              <p>2.constructor</p>
+              obj.constructor === Object
+            </div>
+            <div>
+              <p>3.instanceof</p>
+              obj instanceof Object //true
+            </div>
+            <div>
+              <p>4.typeof </p> typeof obj === Object
+            </div>
+          </div>
+        ),
       },
       {
         title: "var let const",
@@ -1156,6 +1174,20 @@ const list = [
             4.删除 Dead
             Code，经过前面几步操作之后，模块导出列表中未被使用的值都不会定义在
             __webpack_exports__ 对象中，形成一段不可能被执行的 Dead Code 效果
+          </div>
+        ),
+      },
+      {
+        title: "hash",
+        id: "7-6",
+        content: (
+          <div>
+            hash:和整个项目的构建有关，只要项目文件有修改，整个项目构建的hash值就会更改
+            <br />
+            ChunkHash:和webpack打包的chunk有关，不同的entry会生成不同的chunkhash值{" "}
+            <br />
+            Contenthash:根据文件内容来定义hash，文件内容不变，则contenthash不变
+            <br />
           </div>
         ),
       },

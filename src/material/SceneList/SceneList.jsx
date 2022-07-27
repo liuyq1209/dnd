@@ -4,6 +4,7 @@ import {Menu, message, Tree} from "antd"
 import {VideoCameraOutlined} from "@ant-design/icons"
 import ReduxWrapToProps from "../../components/ReduxWrapToProps/ReduxWrapToProps"
 import {
+  addBlock,
   addScene,
   changeCurBlock,
   changeCurScene,
@@ -25,7 +26,9 @@ function SceneList({
   deleteScene,
   changeCurScene,
   changeCurBlock,
+  addBlock,
 }) {
+  console.log("scenelist rerendered")
   const [scenes, setScenes] = useState(
     arrayToTree(orm.session(ormReducer).Scene.all().toRefArray())
   )
@@ -43,6 +46,41 @@ function SceneList({
   useEffect(() => {
     setScenes(arrayToTree(orm.session(ormReducer).Scene.all().toRefArray()))
   }, [ormReducer])
+
+  function copy(cur) {
+    //复制镜头
+    console.log(cur)
+    let newBkId = ormReducer.Block.meta.maxId + 1
+    const newOj = _.cloneDeep(cur)
+    delete newOj.id
+    delete newOj.name
+    delete newOj.blocks
+    let blocks = []
+
+    //复制镜头对应的组件
+    const newScId = ormReducer.Scene.meta.maxId + 1
+    const bks = orm.session(ormReducer).Block.all().toRefArray()
+    console.log(bks)
+    const curBks = bks.filter(v => v.curScene.id === cur.id)
+    console.log(curBks)
+    curBks &&
+      curBks.map(b => {
+        const newB = _.cloneDeep(b)
+        delete newB.id
+        console.log()
+        newB.curScene = {
+          id: newScId,
+          name: `镜头${newScId + 1}`,
+        }
+        console.log(newB)
+        blocks.push(newBkId++)
+        addBlock(newB)
+      })
+    //复制镜头时,需要在复制组件时同步处理blocks的问题
+    newOj.blocks = blocks
+    addScene(newOj)
+  }
+
   function SceneItem({item}) {
     const Scene = orm.session(ormReducer).Scene
     const handleMap = {
@@ -65,9 +103,7 @@ function SceneList({
         })
       },
       copy: cur => {
-        const newOj = _.cloneDeep(cur)
-        delete newOj.id
-        addScene(newOj)
+        copy(cur)
       },
       delete: cur => {
         if (Scene.all().toRefArray().length <= 1) {
@@ -156,5 +192,5 @@ function SceneList({
 }
 export default ReduxWrapToProps({
   Component: SceneList,
-  actions: {addScene, deleteScene, changeCurScene, changeCurBlock},
+  actions: {addScene, deleteScene, changeCurScene, changeCurBlock, addBlock},
 })

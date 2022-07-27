@@ -1,10 +1,16 @@
 export const addBlock = (payload, Block, Scene) => {
   const bk = Block.create(payload)
   const scs = Scene.filter(v => v.name === bk.curScene.name).toRefArray()
-  const sc = scs.length ? scs[0] : {}
-  sc.blocks = sc.blocks || []
-  //在对应的镜头的blocks字段中添加该组件id
-  Scene.withId(sc.id).update({blocks: sc.blocks.concat(bk.id)})
+
+  if (scs.length) {
+    console.log(scs)
+    const sc = scs[0]
+    console.log(bk, sc.blocks)
+    sc.blocks = sc.blocks || []
+    //在对应的镜头的blocks字段中添加该组件id
+    Scene.withId(sc.id).update({blocks: sc.blocks.concat(bk.id)})
+  }
+
   return bk
   //todo删除所有组件,再次添加组件时,组件id=0,有问题
 }

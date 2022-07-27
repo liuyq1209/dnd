@@ -54,6 +54,7 @@ function Header({
     addCurStep()
   }
   const changeName = e => {
+    console.log("changeName")
     changePageSetting({
       name: e.target.value,
     })
